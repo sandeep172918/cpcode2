@@ -1,0 +1,5 @@
+# Ignore Competitive Companion test files
+.cph/
+
+# Ignore all compiled output files
+*.out
