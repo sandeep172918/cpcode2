@@ -40,7 +40,7 @@ const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
- 
+
 void solve(){
 lli n,a,b;cin>>a>>b>>n;
 if(n>a+2*(2*b-1))no;

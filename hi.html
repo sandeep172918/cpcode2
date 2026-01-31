@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Single Line Text Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 180px;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid gray;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 20px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: black;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .options {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Single Line Text Formatter</h1>
+
+  <h3>Input Text:</h3>
+  <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+
+  <div class="options">
+    <label>
+      <input type="checkbox" id="removeSpaces">
+      Remove All Spaces Too
+    </label>
+  </div>
+
+  <button onclick="convertText()">Convert to Single Line</button>
+  <button onclick="copyText()">Copy Output</button>
+
+  <h3>Output Text:</h3>
+  <textarea id="outputText" readonly></textarea>
+</div>
+
+<script>
+  function convertText() {
+    let text = document.getElementById("inputText").value;
+
+    // Remove all line breaks
+    text = text.replace(/\n/g, " ");
+
+    // Remove extra multiple spaces
+    text = text.replace(/\s+/g, " ");
+
+    // Optional: Remove all spaces completely
+    if (document.getElementById("removeSpaces").checked) {
+      text = text.replace(/ /g, "");
+    }
+
+    document.getElementById("outputText").value = text;
+  }
+
+  function copyText() {
+    let output = document.getElementById("outputText");
+    output.select();
+    document.execCommand("copy");
+    alert("Copied to clipboard!");
+  }
+</script>
+
+</body>
+</html>

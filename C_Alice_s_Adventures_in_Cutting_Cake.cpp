@@ -40,12 +40,46 @@ const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-vll v;
-lli n,m,x;
+
 void solve(){
+lli n,m,x;
 cin>>n>>m>>x;
-v.clear();
-fr(i,n)cin>>v[i];
+vll v(n+1);
+frs(i,1,n)cin>>v[i];
+vll pre(n+1);
+frs(i,1,n)pre[i]=pre[i-1]+v[i];
+
+vll suff={n};
+vll pref={1};
+lli curr=0;
+rfr(i,n,1){
+    curr+=v[i];
+    if(curr<x)continue;
+    curr=0;
+    suff.psb(i-1);
+}
+curr=0;
+frs(i,1,n){
+  curr+=v[i];
+  if(curr<x)continue;
+   curr=0;
+   pref.psb(i+1);
+}
+if(pref.size()-1<m  && suff.size()-1<m){
+    no1;
+    return;
+}
+
+
+lli sum=0;
+frs(i,0,m){
+    lli l=pref[i];
+    lli r=suff[m-i];
+    sum=max(sum,pre[r]-pre[l-1]);
+
+}
+cout<<sum<<'\n';
+
 
 
 }

@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-01-20 19:51
+//Date: 2026-01-31 00:01
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,80 +41,24 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
-lli kadane(vll &v){
-    lli maxi=0;
-    lli curr=0;
-    fr(i,v.size()){
-        curr+=v[i];
-        maxi=max(curr,maxi);
-        if(curr<0)curr=0;
-    }
-    maxi=max(maxi,curr);
-    return maxi;
-}
-
 void solve(){
 lli n,k;cin>>n;
-get(v,n);
-vll t=v;
-fr(i,n)t[i]*=-1;
-lli id=-1;
-fr(i,n){
-    if(v[i]!=-1 && v[i]!=1){
-        id=i;
-    }
+yes;
+vvll t;
+if(n&1){
+   t.push_back({1,3,1});
+   for(lli i=2;i<n;i+=2){
+   t.push_back({2,4,i,i+1});
+
+   }
 }
-if(id==-1){
-  lli r=kadane(v);
-  lli l=kadane(t);
-  l*=-1;
- // cout<<l<<' '<<r<<'\n';
- cout<<r-l+1<<'\n';
-  frs(i,l,r){
-    cout<<i<<' ';
-  }
-  nl;
-}else{
-
-   vll ll,ll1;
-   fr(i,id){
-    ll.psb(v[i]);
-    ll1.psb(t[i]);
-   } 
-   lli lmx=kadane(ll);
-   lli lmn=-1*kadane(ll1);
-   vll rr,rr1;
-   frs(i,id+1,n-1){
-    rr.psb(v[i]);
-    rr1.psb(t[i]);
-   }
-   lli rmx=kadane(rr);
-   lli rmn=-1*kadane(rr1);
-
-   lli mini1=v[id],maxi=v[id];
-   lli maxi1=v[id],mini=v[id];
-   lli prev=v[id];
-   frs(i,id+1,n-1){
-      prev+=v[i];
-      maxi=max(maxi,prev);
-      mini=min(mini,prev);
-   }
-   prev=v[id];
-   rfr(i,id-1,0){
-      prev+=v[i];
-      mini1=min(mini1,prev);
-      maxi1=max(maxi1,prev);
-   }
-  // cout<<mini1<<' '<<maxi<<'\n';
-   set<lli>st;
-   st.insert(0);
-   frs(i,lmn,lmx)st.insert(i);
-   frs(i,rmn,rmx)st.insert(i);
-   frs(i,mini1+mini-v[id],maxi+maxi1-v[id])st.insert(i);
-  //  frs(i,mini,maxi1)st.insert(i);
-  cout<<st.size()<<'\n';
-  for(auto &it:st)cout<<it<<' ';
-  nl;
+else{
+    for(lli i=1;i<n;i+=2)t.push_back({2,4,i,i+1});
+}
+cout<<t.size()<<'\n';
+// fr(i,t.size())out(t[i]);
+for(auto &it:t){
+    out(it);
 }
 
 }
