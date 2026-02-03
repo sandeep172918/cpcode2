@@ -43,18 +43,18 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
  
 void solve(){
 lli n,k;cin>>n>>k;
-map<lli,vll>m;
-map<lli,vll>ac;
+// map<lli,vll>m;
+// map<lli,vll>ac;
  
-fr(i,n){
-    lli x;cin>>x;
-    fr(i,x){
-        lli y;cin>>y;
-        m[i+1].psb(y);
-        ac[y].psb(i+1);
+// fr(i,n){
+//     lli x;cin>>x;
+//     fr(i,x){
+//         lli y;cin>>y;
+//         m[i+1].psb(y);
+//         ac[y].psb(i+1);
 
-    }
-}
+//     }
+// }
 
 
 
