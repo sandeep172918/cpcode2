@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-04 23:26
+//Date: 2026-02-05 11:23
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,27 +41,22 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
-void solve(){
-lli n,k;cin>>n;
-get(v,n);
-get(b,n);
-frs(i,1,n-1)b[i]+=b[i-1];
-srt(v);
-lli ans=0;
-fr(i,n){
-  lli id=n-b[i];
-  if(id<0)break;
-  ans=max(ans,v[id]*(i+1));
-}
-cout<<ans<<'\n';
 
-}
 
 int32_t main(){
 fastio;
+  ifstream fin("dotak.in");
 lli test=1;
-cin>>test;
+fin>>test;
 while(test--){
-solve();
+lli n,k;
+fin>>n>>k;
+lli x=n*k;
+x%=(k+1);
+if((x&1) || x==k){
+    cout<<"Omda\n";
+}else{
+    cout<<"Teemo\n";
+}
 }
 }
