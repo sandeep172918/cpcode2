@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-06 10:21
+//Date: 2026-02-06 00:41
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -40,47 +40,16 @@ const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-vll vis;
-vvll adj;
-set<lli>st;
-vll deg;
- void dfs(lli node){
-    vis[node]=1;
-    st.insert(deg[node]);
-    for(auto &it:adj[node]){
-        if(!vis[it])dfs(it);
-    }
- }
+ 
 void solve(){
-lli n,k;cin>>n>>k; 
-adj=vvll(n);
-vis=vll(n);
-deg=vll(n);
-fr(i,k){
-    lli u,v;cin>>u>>v;
-    u--;
-    v--;
-    adj[u].psb(v);
-    adj[v].psb(u);
-    deg[u]++;
-    deg[v]++;
-}
-bool bol=true;
-fr(i,n){
-    if(!vis[i]){
-        st.clear();
-        dfs(i);
-        if(st.count(1))continue;
-        bol=false;
-    }
-}
+string s;cin>>s;
+cout<<"FCDS\n";
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
 while(test--){
 solve();
 }
