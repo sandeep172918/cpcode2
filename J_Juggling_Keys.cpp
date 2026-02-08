@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-08 12:52
+//Date: 2026-02-07 19:49
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,19 +42,26 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
 void solve(){
-lli n=318000LL;
-lli sum=0;
-frs(i,1,n){
- if(i&1){
-    sum+=i*i;
- }
+lli n,k,q;cin>>n>>k>>q;
+vector<pair<pr,lli>>p(q);
+fr(i,q){
+    lli id,l,r;cin>>id>>l>>r;
+    p[i]={{r,l},id};
 }
-cout<<sum<<'\n';
+srt(p);
+vpr h;
+map<lli,vpr>m;
+fr(i,q){
+    
+}
+
+
 }
 
 int32_t main(){
 fastio;
 lli test=1;
+cin>>test;
 while(test--){
 solve();
 }

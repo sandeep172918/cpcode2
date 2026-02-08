@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-08 12:52
+//Date: 2026-02-07 18:55
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -11,10 +11,10 @@
 #define srt(v) sort(v.begin(),v.end())
 #define rsrt(v) sort(v.rbegin(),v.rend())
 #define pr pair<lli,lli>
-#define vll vector<lli>
+#define vll vector<char>
 #define vbl vector<bool>
 #define vpr vector<pr>
-#define vvll vector<vector<lli>>
+#define vvll vector<vector<char>>
 #define get(v,n) vll v(n);fr(i,n)cin>>v[i]
 #define ff first
 #define ss second
@@ -33,7 +33,7 @@
 #define no cout<<"NO\n"
 #define no1 cout<<"-1\n"
 #define nl cout<<"\n"
-#define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
+#define out(v) fr(i,v.size())cout<<v[i]<<"";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
 const int MOD=1e9+7;
@@ -42,14 +42,33 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
 void solve(){
-lli n=318000LL;
-lli sum=0;
-frs(i,1,n){
- if(i&1){
-    sum+=i*i;
- }
+lli n,m,a,b,c;cin>>n>>m>>b>>c>>a;a--;b--;c--;
+vll v(n*m);
+v[0]='K';
+v[1]='I';
+v[2]='T';
+frs(i,3,n*m-1){
+  if(a>0){
+    v[i]='T';
+    a--;
+    continue;
+  }
+  if(b>0){
+    v[i]='K';
+    b--;
+    continue;
+  }
+  if(c>0){
+    c--;
+    v[i]='I';
+    continue;
+  }
 }
-cout<<sum<<'\n';
+fr(i,n){
+    fr(j,m){
+        cout<<v[i*m+j];
+    }nl;
+}
 }
 
 int32_t main(){

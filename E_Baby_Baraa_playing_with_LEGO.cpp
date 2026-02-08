@@ -137,11 +137,11 @@ lli n,k;cin>>n>>k;
 get(v,n);
 fr(i,n)v[i]--;
 vll last(n,-1);
-vll f(n,0);
-fr(i,n)f[v[i]]++;
-fr(i,n){
-    if(!f[i])last[i]=1e18;
-}
+// vll f(n,0);
+// fr(i,n)f[v[i]]++;
+// fr(i,n){
+//     if(!f[i])last[i]=1e18;
+// }
 vector<pair<pr,lli>>q(k);
 fr(i,k){
    lli l,r;cin>>l>>r;

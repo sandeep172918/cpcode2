@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-08 12:52
+//Date: 2026-02-07 15:27
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,14 +42,47 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
 void solve(){
-lli n=318000LL;
-lli sum=0;
-frs(i,1,n){
- if(i&1){
-    sum+=i*i;
- }
+lli n;cin>>n;
+lli maxi=0;
+vector<vector<string>>v(n,vector<string>(10));
+map<string,lli>m;
+fr(i,n){
+    fr(j,10){
+      cin>>v[i][j];
+      m[v[i][j]]++;
+    }
 }
-cout<<sum<<'\n';
+for(auto &it:m)maxi=max(maxi,it.ss);
+set<string>t;
+for(auto &it:m){
+    if(it.ss==maxi)t.insert(it.ff);
+}
+// for(auto &it:t)cout<<it<<' ';
+// nl;
+fr(j,10){
+    map<string,lli>mm;
+    fr(i,n){
+        if(t.count(v[i][j]))mm[v[i][j]]++;
+    }
+    maxi=0;
+    for(auto &it:mm)maxi=max(maxi,it.ss);
+    set<string>nt;
+    for(auto &it:mm){
+        if(it.ss==maxi){
+            nt.insert(it.ff);
+
+        }
+    }
+    if(nt.size()==1){
+        cout<<(*(nt.begin()))<<'\n';
+        return;
+    }
+    if(nt.size())
+    t=nt;
+
+
+}
+cout<<"tie"<<'\n';
 }
 
 int32_t main(){
