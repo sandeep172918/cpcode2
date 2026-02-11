@@ -1,5 +1,5 @@
 //Author: sandeep172918
-//Date: 2026-02-10 21:26
+//Date: 2026-02-10 20:01
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,61 +41,41 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  
+static inline lli mod_pow(lli a, lli e, lli m=MOD){
+         lli r = 1 % m;
+         a %= m;
+         while(e){
+             if(e & 1) r = (__int128)r * a % m;
+             a = (__int128)a * a % m;
+             e >>= 1;
+         }
+         return r;
+    }
 void solve(){
-lli n,m;cin>>n>>m;
-vvll v(n,vll(m));
-lli sum=0;
-fr(i,n){
-  fr(j,m){
-    cin>>v[i][j];
-    sum+=v[i][j];
-  }
+lli n,k;cin>>n;
+if(n==1){
+    cout<<"1";
+    return;
 }
-lli ans=(sum/2)*((sum+1)/2);
-sum=sum/2;
-vll p(m);
-fr(j,m){
-  fr(i,n){
-    p[j]+=v[i][j];
-  }
+if(n==4){
+    cout<<"1 3 2 4";
+    return;
 }
-lli id=-1;
-lli curr=0;
-fr(j,m){
- if(curr+p[j]>sum){
-  id=j;
-  break;
- }
- curr+=p[j];
-}
-lli h=n;
-rfr(i,n-1,0){
-  curr+=v[i][id];
-  if(curr==sum){
-    h=i;
-    break;
-  }
+frs(i,2,n-1){
+    if(n%i==0){
+        no1;
+        return;
+    }
 }
 
-cout<<ans<<'\n';
-string w="";
-fr(i,id)w+='R';
-fr(i,h)w+='D';
-w+='R';
-lli r=count(all(w),'R');
-lli d=count(all(w),'D');
-d=n-d;
-r=m-r;
-while(d--){
-  w+='D';
+//hit and trial
+vll a(n);
+a[0]=1;
+a[n-1]=n;
+frs(i,2,n-1){
+    a[i-1]=i*mod_pow(i-1,n-2,n)%n;
 }
-while(r--){
-  w+='R';
-}
-
-cout<<w<<'\n';
-
-
+out(a);
 
 
 }
@@ -103,9 +83,7 @@ cout<<w<<'\n';
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
 while(test--){
 solve();
 }
 }
-

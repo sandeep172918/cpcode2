@@ -32,7 +32,7 @@
 #define yes cout<<"YES\n"
 #define no cout<<"NO\n"
 #define no1 cout<<"-1\n"
-#define nl cout<<"\n"
+#define nl cout<<endl
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
@@ -63,18 +63,34 @@ fr(i,n){
     }
 }
     lli rem=-1;
+    lli rem2=-1;
     fr(i,n){
         if(i!=ind2)rem=i;
+        if(i!=ind)rem2=i;
     }
     k=q(ind,rem);
-    
+    lli k2=(ind2,rem2);
     if(k==n){
-      cout<<"! "<<(ind2-ind+n)%n<<'\n';
+      cout<<"! "<<(ind2-ind+n)%n;
+      nl;
+      return;
     }else{
-      cout<<"! "<<(ind-ind2+n)%n<<'\n';
+      cout<<"! "<<(ind-ind2+n)%n;
+      nl;
+      return;
 
     }
-    cout.flush();
+     if(k2==n){
+      cout<<"! "<<(ind-ind2+n)%n;
+      nl;
+      return;
+    }else{
+      cout<<"! "<<(ind2-ind+n)%n;
+      nl;
+      return;
+
+    }
+    
 }
 
 
@@ -85,3 +101,4 @@ while(test--){
 solve();
 }
 }
+
