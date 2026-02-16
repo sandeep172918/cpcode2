@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-02-13 22:33
+//Date: 2026-02-16 23:54
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,28 +74,97 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
+class LiChao {
+public:
+   
+
+    struct Line {
+        lli m, b;
+        Line(lli _m = 0, lli _b = -(1ll<<62)) : m(_m), b(_b) {}
+        lli gett(lli x) const { return m * x + b; }
+    };
+
+    struct Node {
+        Line line;
+        Node *l = nullptr, *r = nullptr;
+        Node(Line v) : line(v) {}
+    };
+
+    lli L, R;
+    Node* root;
+
+    LiChao(lli l, lli r) : L(l), R(r), root(nullptr) {}
+
+    void add_line(Line nw) {
+        add_line(nw, L, R, root);
+    }
+
+    void add_line(Line nw, lli l, lli r, Node*& node) {
+        if (!node) {
+            node = new Node(nw);
+            return;
+        }
+
+        lli mid = (l + r) >> 1;
+
+        bool left = nw.gett(l) > node->line.gett(l);
+        bool middle = nw.gett(mid) > node->line.gett(mid);
+
+        if (middle) swap(nw, node->line);
+
+        if (r - l == 1) return;
+
+        if (left != middle)
+            add_line(nw, l, mid, node->l);
+        else
+            add_line(nw, mid, r, node->r);
+    }
+
+    lli query(lli x) {
+        return query(x, L, R, root);
+    }
+
+    lli query(lli x, lli l, lli r, Node* node) {
+        if (!node) return -(1ll<<62);
+
+        lli res = node->line.gett(x);
+        if (r - l == 1) return res;
+
+        lli mid = (l + r) >> 1;
+        if (x < mid && node->l) res = max(res, query(x, l, mid, node->l));
+        if (x >= mid && node->r) res = max(res, query(x, mid, r, node->r));
+        return res;
+    }
+};
+
+
 void solve(){
-
 lli n,k;cin>>n;
-get(v,n);
-set<lli>p,s;
-fr(i,n+1){
-    p.insert(i);
-    s.insert(i);
-}
-vll pp(n),ss(n);
-fr(i,n){
-    p.erase(v[i]);
-    pp[i]=(*p.begin());
-}
-rfr(i,n-1,0){
-    s.erase(v[i]);
-    ss[i]=(*s.begin());
-}
-out(pp);
-out(ss);
-}
+// get(v,n);
+vll v(n+1);
 
+lli ans=0;
+vll pf(n+1,0);
+frs(i,1,n){
+    cin>>v[i];
+    ans+=i*v[i];
+    pf[i]+=pf[i-1]+v[i];
+}
+LiChao li(-1e9,1e9),lc(-1e9,1e9);
+lli pre=ans;
+rfr(i,n-1,1){
+  li.add_line({i+1,-pf[i+1]});
+  lli ch=pf[i]-v[i]*i+li.query(v[i]);
+  ans=max(ans,pre+ch);
+}
+frs(i,2,n){
+    lc.add_line({i-1,-pf[i-2]});
+    lli ch=pf[i-1]-v[i]*i+lc.query(v[i]);
+    ans=max(ans,pre+ch);
+}
+cout<<ans<<'\n';
+
+}
 
 int32_t main(){
 fastio;
