@@ -139,7 +139,6 @@ class Segment_Tree{
 
     if(l >= ql){
         if(t[id].sum < target){
-            target -= t[id].sum;
             return -1;
         }
         if(l == r){
