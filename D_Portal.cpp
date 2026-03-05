@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-01 00:15
+//Date: 2026-03-05 17:30
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -76,16 +76,64 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 //BSDK math snippet hai
 void solve(){
-lli n=1;
-//get(v,n);
-vll v(n);
-cout<<(0/0);
+lli n,x,y;cin>>n>>x>>y;
+get(v,n);
+y--;
+
+
+vll t;
+frs(i,x,y){
+    t.psb(v[i]);
+}
+
+lli mini=mne(t);
+vll tt;
+bool bol=false;
+fr(i,t.size()){
+    if(t[i]==mini){
+        bol=true;
+    }
+    if(bol){
+
+      tt.psb(t[i]);
+      t[i]=-1;
+    }
+} 
+fr(i,t.size()){
+    if(t[i]!=-1)tt.psb(t[i]);
+}
+
+mini=tt[0];
+bol=false;
+vll ans;
+fr(i,n){
+    if(i>=x && i<=y)continue;
+    if(bol){
+        ans.psb(v[i]);
+        continue;
+    }
+    if(v[i]>mini){
+      bol=true;
+      for(auto &it:tt){
+        ans.psb(it);
+      }
+      ans.psb(v[i]);
+    }else ans.psb(v[i]);
+}
+if(ans.size()!=n){
+  for(auto &it:tt)ans.psb(it);
+}
+
+out(ans);
+
+
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
+cin>>test;
 while(test--){
 solve();
 }

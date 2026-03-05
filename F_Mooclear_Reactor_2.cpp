@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-01 00:15
+//Date: 2026-03-05 23:57
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,18 +74,53 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
-//BSDK math snippet hai
+
 void solve(){
-lli n=1;
-//get(v,n);
-vll v(n);
-cout<<(0/0);
+lli n,m;cin>>n>>m;
+vvll v(n+1);
+vll rem(n+1);
+vll rem2(n+1);
+fr(i,n){
+    lli x,y;cin>>x>>y;
+    v[y].psb(x);
+}
+lli pre=0;
+lli sum=0;
+multiset<lli>st;
+rfr(i,n,0){
+  for(auto &it:v[i]){
+    st.insert(it);
+    sum+=it;
+  }
+  while(st.size()>(i+1)){
+    lli c=*st.begin();
+    st.extract(c);
+    sum-=c;
+  }
+  pre=max(pre,sum);
+  if(st.size()==(i+1)){
+    rem[i]=sum-(*st.begin());
+  }else{
+    rem[i]=sum;
+  }
+
+}
+rem2[0]=rem[0];
+frs(i,1,n){
+    rem2[i]=max(rem2[i-1],rem[i]);
+}
+fr(i,m){
+    lli x,y;cin>>x>>y;
+    cout<<max(pre,rem2[y]+x)<<' ';
+}
+nl;
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
+cin>>test;
 while(test--){
 solve();
 }

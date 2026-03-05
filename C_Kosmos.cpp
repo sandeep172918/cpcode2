@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-01 00:15
+//Date: 2026-03-05 15:15
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,7 +36,7 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=1e9+7;
+const int MOD=998244352;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -75,17 +75,67 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 */
 
 //BSDK math snippet hai
+ // --- fast pow (modular exponentiation) ---
+    static inline lli mod_pow(lli a, lli e, lli m=MOD+1){
+        lli r = 1 % m;
+        a %= m;
+        while(e){
+            if(e & 1) r = (__int128)r * a % m;
+            a = (__int128)a * a % m;
+            e >>= 1;
+        }
+        return r;
+    }
+
+// Matrix multiplication with modulo
+void multiply(vector<vector<lli>>& mat1, vector<vector<lli>>& mat2) {
+    lli x = (mat1[0][0] * mat2[0][0] + mat1[0][1] * mat2[1][0]) % MOD;
+    lli y = (mat1[0][0] * mat2[0][1] + mat1[0][1] * mat2[1][1]) % MOD;
+    lli z = (mat1[1][0] * mat2[0][0] + mat1[1][1] * mat2[1][0]) % MOD;
+    lli w = (mat1[1][0] * mat2[0][1] + mat1[1][1] * mat2[1][1]) % MOD;
+
+    mat1[0][0] = x;
+    mat1[0][1] = y;
+    mat1[1][0] = z;
+    mat1[1][1] = w;
+}
+
+// Matrix exponentiation with modulo
+void matrixPower(vector<vector<lli>>& mat1, lli n) {
+    if (n == 0 || n == 1) return;
+
+    vector<vector<lli>> mat2 = {{1, 1}, {1, 0}};
+    matrixPower(mat1, n / 2);
+    multiply(mat1, mat1);
+
+    if (n % 2 != 0) {
+        multiply(mat1, mat2);
+    }
+}
+
+// Compute nth Fibonacci number modulo MOD
+lli nthfibo(lli n) {
+    if (n <= 1) return n;
+
+    vector<vector<lli>> mat1 = {{1, 1}, {1, 0}};
+    matrixPower(mat1, n - 1);
+    return mat1[0][0];
+}
+
+
+
+
 void solve(){
-lli n=1;
-//get(v,n);
-vll v(n);
-cout<<(0/0);
+lli n,k;cin>>n;
+k=nthfibo(n);
+cout<<mod_pow(2,k);
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
+
 while(test--){
 solve();
 }
