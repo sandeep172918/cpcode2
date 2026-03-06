@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-06 01:00
+//Date: 2026-03-06 11:39
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,18 +74,55 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
-//BSDK math snippet hai
+
 void solve(){
-lli n,k;cin>>n;
-vvll v(n,vll(4));
-lli tot=0;
+lli n,w,h;cin>>n>>w>>h;
+vector<pair<pr,lli>>v;
 fr(i,n){
-    cin>>v[i][1]>>v[i][0];
-    v[i][2]=v[i][0]*v[i][1];
-    v[i][3]=i;
-    tot+=v[i][1];
+    lli ww,hh;cin>>ww>>hh;
+    if(ww>w && hh>h)v.push_back({{ww,hh},i});  
+
+}
+n=v.size();
+if(n==0){
+    cout<<"0\n";
+    return;
 }
 srt(v);
+vll dp(n,1);
+vll par(n);
+iota(all(par),0);
+fr(i,n){
+    fr(j,i){
+        if(v[j].ff.ff<v[i].ff.ff && v[j].ff.ss<v[i].ff.ss){
+           if(dp[j]+1>dp[i]){
+            dp[i]=dp[j]+1;
+            par[i]=j;
+           }
+        }
+    }
+}
+lli k=mxe(dp);
+vll id;
+cout<<k<<'\n';
+fr(i,n){
+   if(dp[i]==k){
+    k=i;
+    break;
+   }
+}
+id.psb(k);
+while(true){
+   lli prev=id.back();
+   lli pp=par[prev];
+   if(pp==prev)break;
+   id.psb(pp);
+}
+
+rfr(i,(lli)id.size()-1,0){
+    cout<<v[id[i]].ss+1<<' ';
+}
+
 
 
 

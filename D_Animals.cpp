@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-06 01:00
+//Date: 2026-03-06 19:59
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,26 +74,47 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
-//BSDK math snippet hai
-void solve(){
-lli n,k;cin>>n;
-vvll v(n,vll(4));
-lli tot=0;
-fr(i,n){
-    cin>>v[i][1]>>v[i][0];
-    v[i][2]=v[i][0]*v[i][1];
-    v[i][3]=i;
-    tot+=v[i][1];
+lli n,k;
+vll v;
+vvll mem;
+lli fun(lli i,lli k){
+    if(i==n || k==0)return 0;
+    if(mem[i][k]!=-1)return mem[i][k];
+    lli nopick=fun(i+1,k);
+    lli pick=0;
+    if(k>=v[i]){
+        pick=fun(i+1,k-v[i])+1;
+    }
+    return mem[i][k]=max(pick,nopick);
+
 }
-srt(v);
-
-
-
+void solve(){
+cin>>n>>k;
+v=vll(n);
+mem=vvll(n,vll(k+1,-1));
+fr(i,n){
+    cin>>v[i];
+    v[i]*=(n-i);
+}
+// lli an=0;
+// srt(v);
+// fr(i,n){
+//   k-=v[i];
+//   if(k<0){
+//    break;
+//   }
+//   an++;
+// }
+// cout<<an<<'\n';
+cout<<fun(0,k)<<'\n';
 }
 
 int32_t main(){
 fastio;
 lli test=1;
+
+    freopen("input.txt","r",stdin); 
+    freopen("output.txt","w",stdout);
 while(test--){
 solve();
 }
