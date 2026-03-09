@@ -87,8 +87,8 @@ fr(i,n){
     }
 }
 lli ans=0;
-fr(i,n){
-    if(d[i]!=1e9)ans=i;
+fr(i,n+1){
+    if(d[i]<1e9)ans=i;
 }
 cout<<ans<<'\n';
 
