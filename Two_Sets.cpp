@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-01 00:15
+//Date: 2026-03-09 22:17
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -76,8 +76,35 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 //BSDK math snippet hai
 void solve(){
-lli n=1;
+lli n,k;cin>>n;
+if(n%4==0 || n%4==3){
+    
+    k=(n*(n+1))/4;
+    vll v(n+1,0);
+    lli c=0;
+   // cout<<k<<'\n';
+    rfr(i,n,1){
+        if(k>=i){
+            k-=i;
+            v[i]=1;
+            c++;
+        }
+    }
+    if(!k){
+        yes;
+        cout<<c<<'\n';
+        frs(i,1,n){
+            if(v[i])cout<<i<<' ';
+        }
+        nl;
+        cout<<n-c<<'\n';
+        frs(i,1,n){
+            if(!v[i])cout<<i<<' ';
+        }
+        nl;
 
+    }else no;
+}else no;
 
 }
 

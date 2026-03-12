@@ -45,8 +45,13 @@ lli dppp(string s,lli pos,bool tight,lli prev,bool lead){
     lli ub=tight ? (s[pos]-'0'):9;
     lli c=0;
     fr(i,ub+1){
-        bool nt=(i==ub);
-        bool nld=
+        
+        bool nt=tight&(i==ub);
+        bool nld=lead&(i==0);
+        
+        if(!nld && i==prev)continue;
+
+        c+=dppp(s,pos+1,nt,i,nld);
     }
     
     return dp[pos][prev][tight][lead]=c;
@@ -56,9 +61,9 @@ void solve(){
 string r;lli l;cin>>l>>r;
 l--;
 string ll=to_string(l);
-memset(dp,sizeof(dp),-1);
+memset(dp,-1,sizeof(dp));
 lli b=dppp(r,0,true,10,true);
-memset(dp,sizeof(dp),-1);
+memset(dp,-1,sizeof(dp));
 lli a=dppp(ll,0,true,10,true);
 cout<<b-a<<'\n';
 

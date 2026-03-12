@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-01 00:15
+//Date: 2026-03-10 11:55
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -34,7 +34,7 @@
 #define no1 cout<<"-1\n"
 #define nl cout<<"\n"
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
-#define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
+#define srtp(v) sort(all(v),[](const pair<pr,lli>& a,const pair<pr,lli>& b){return a.ff.ss<b.ff.ss;});
 using namespace std;
 const int MOD=1e9+7;
 using namespace __gnu_pbds;
@@ -74,10 +74,40 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
-//BSDK math snippet hai
-void solve(){
-lli n=1;
+vector<pair<pr,lli>>v;
+vll dp;
 
+lli dpp(lli id){  
+    if(id>= v.size())return 0;
+    if(dp[id]!=-1)return dp[id];
+    lli notake=dpp(id+1);
+    lli take=0;
+    lli wt=v[id].ss;
+    lli en=v[id].ff.ss;
+    pair<pr,lli> tar={{en,1e18},-1};
+    auto it=upper_bound(v.begin()+id+1,v.end(),tar);
+    take=wt+dpp(it-v.begin());
+  
+    return  dp[id]=max(take,notake);
+
+}
+
+void solve(){
+lli n,k;cin>>n;
+lli a,b,c;
+dp=vll(n,-1);
+map<pr,lli>m;
+
+fr(i,n){
+  cin>>a>>b>>c;
+  m[{a,b}]=max(m[{a,b}],c);
+ // cout<<m[{a,b}];
+}
+for(auto &it:m){
+    v.push_back({{it.ff.ff,it.ff.ss},it.ss});
+}
+
+cout<<dpp(0);
 
 }
 
