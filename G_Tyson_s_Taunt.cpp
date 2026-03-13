@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-12 19:49
+//Date: 2026-03-13 19:33
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,69 +74,145 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
+class Segment_Tree{
+   struct node{
+    lli sum;
+    lli lazy;
+    node(){
+        sum=0;
+        lazy=0;
+    }
+   };
+
+   vector<node>t;
+   vector<lli>v;
+   lli n;
+   public:
+    Segment_Tree(vector<lli>&a){
+       n=a.size(); 
+       v=a;
+       t.resize(4*n+1);
+       build(1,0,n-1);
+
+    }
+  
+    node merge(node a,node b){ //isme lazy nhi sochna hota
+        node temp;
+        temp.sum=a.sum+b.sum;
+        return temp;
+    }
+
+
+    void build(lli id,lli l,lli r){
+        if(l==r){
+            t[id].sum=v[l];
+            t[id].lazy=0;
+            return;
+        }
+        lli mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid+1,r);
+        t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    // void apply(lli id,lli l,lli r){
+    //      t[id].sum+=((r-l+1)*t[id].lazy);
+    //      return;
+    // }
+
+    // void push(lli id,lli l,lli r){
+    //     if(t[id].lazy !=0){
+    //        apply(id,l,r);
+    //        t[2*id].lazy+=t[id].lazy;
+    //        t[2*id+1].lazy+=t[id].lazy;
+    //     }
+    //     t[id].lazy=0;
+    // }
+
+    void update(lli id,lli l,lli r,lli lq,lli rq,lli val){
+     // push(id,l,r);
+      if(rq<l || r<lq){
+        return;
+      }
+      if(lq<=l && r<=rq){
+        t[id].sum+=val;
+       // push(id,l,r);
+        return;
+      }
+      lli mid=(l+r)/2;
+      update(2*id,l,mid,lq,rq,val);
+      update(2*id+1,mid+1,r,lq,rq,val);
+      t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    node query(lli id,lli l,lli r,lli lq,lli rq){
+     // push(id,l,r);
+      if(rq<l || r<lq){
+        return node();
+      }
+      if(lq<=l && r<=rq){
+        return t[id];
+      }
+      lli mid=(l+r)/2;
+      return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+    }
+    lli quer(lli l,lli r){
+        node ans=query(1,0,n-1,l,r);
+        return ans.sum;
+    }
+};
+
+
+lli fun(lli k,vector<lli>v){
+    lli n=v.size();
+    fr(i,n)v[i]-=k;
+    vll p(n+1,0);
+    fr(i,n)p[i+1]=p[i]+v[i];
+    lli ans=0;
+    vll c=p;
+    srt(c);
+    c.erase(unique(all(c)),c.end());
+    n=c.size();
+    vll t(n,0);
+    Segment_Tree st(t);
+    for(auto &x:p){
+        lli id=lower_bound(all(c),x)-c.begin();
+        ans+=st.quer(0,id);
+        st.update(1,0,n-1,id,id,1);
+    }
+    return ans;
+}
+
+lli fun2(lli k,vector<lli>v){
+    lli n=v.size();
+    fr(i,n)v[i]-=k;
+    vll p(n+1,0);
+    fr(i,n)p[i+1]=p[i]+v[i];
+    lli ans=0;
+    vll c=p;
+    srt(c);
+    c.erase(unique(all(c)),c.end());
+    n=c.size();
+    vll t(n,0);
+    Segment_Tree st(t);
+    for(auto &x:p){
+        lli id=lower_bound(all(c),x)-c.begin();
+        ans+=st.quer(id,id);
+        st.update(1,0,n-1,id,id,1);
+    }
+    return ans;
+}
 
 void solve(){
-lli n,k;cin>>n;
+lli n,k,a,b;cin>>n>>a>>b;
 get(v,n);
-map<lli,lli>m;
-
-vll t(n,-2);
-t[0]=-1;
-frs(i,1,n-1){
-    if(v[i]>=v[i-1]){
-        lli x=v[i]-v[i-1];
-        if(x==0){
-           if(m.find(v[i])==m.end()){
-        
-            t[i]=-1;
-            m.clear();
-           }else{
-             t[i]=m[v[i]];
-           }
-        }else if(x==1){
-           if(m.find(v[i])==m.end())m[v[i]]=i;
-        }else{
-       
-            t[i]=-1;
-           m.clear();
-        }
-       
-    }
-    else{
-      if(m.find(v[i])==m.end()){
-      
-        m.clear();
-        t[i]=-1;
-      }else{
-        t[i]=m[v[i]];
-      }
-    }
-
-
-}
-lli ans=0;
-lli prev=0;
-
-fr(i,n){
-   if(t[i]==-1){
-    prev+=i+1;
-   }else if(t[i]>=0){
-    prev+=(i-t[i])+1;
-   }else{
-    prev+=1;
-   }
- 
-   ans+=prev;
-}
-
- cout<<ans<<'\n';
-
+cout<<fun(a,v)-fun(b,v)+fun2(b,v);
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
+vll vv={1,2,3,4,5};
 while(test--){
 solve();
 }

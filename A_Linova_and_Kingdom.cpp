@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-12 19:49
+//Date: 2026-03-13 22:49
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -73,70 +73,40 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⣧⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
+vvll adj;
+vll val;
 
-
+lli dfs(lli node,lli par,lli dep){
+  lli sz=0;
+  for(auto &it:adj[node]){
+    if(it==par)continue;
+    sz+=dfs(it,node,dep+1);
+  }
+  val[node]=dep-sz;
+  return sz+1;
+  
+}
 void solve(){
-lli n,k;cin>>n;
-get(v,n);
-map<lli,lli>m;
-
-vll t(n,-2);
-t[0]=-1;
-frs(i,1,n-1){
-    if(v[i]>=v[i-1]){
-        lli x=v[i]-v[i-1];
-        if(x==0){
-           if(m.find(v[i])==m.end()){
-        
-            t[i]=-1;
-            m.clear();
-           }else{
-             t[i]=m[v[i]];
-           }
-        }else if(x==1){
-           if(m.find(v[i])==m.end())m[v[i]]=i;
-        }else{
-       
-            t[i]=-1;
-           m.clear();
-        }
-       
-    }
-    else{
-      if(m.find(v[i])==m.end()){
-      
-        m.clear();
-        t[i]=-1;
-      }else{
-        t[i]=m[v[i]];
-      }
-    }
-
-
+lli n,k;cin>>n>>k;
+adj=vvll(n);
+val=vll(n);
+fr(i,n-1){
+    lli u,v;cin>>u>>v;
+    u--;
+    v--;
+    adj[u].psb(v);
+    adj[v].psb(u);
 }
-lli ans=0;
-lli prev=0;
-
-fr(i,n){
-   if(t[i]==-1){
-    prev+=i+1;
-   }else if(t[i]>=0){
-    prev+=(i-t[i])+1;
-   }else{
-    prev+=1;
-   }
- 
-   ans+=prev;
-}
-
- cout<<ans<<'\n';
+dfs(0,-1,0);
+ rsrt(val);
+//  out(val);
+cout<<accumulate(val.begin(),val.begin()+k,0ll)<<'\n';
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
 while(test--){
 solve();
 }

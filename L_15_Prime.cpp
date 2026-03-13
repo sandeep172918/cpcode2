@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-12 19:49
+//Date: 2026-03-13 11:14
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,63 +74,39 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
-
 void solve(){
 lli n,k;cin>>n;
 get(v,n);
-map<lli,lli>m;
-
-vll t(n,-2);
-t[0]=-1;
-frs(i,1,n-1){
-    if(v[i]>=v[i-1]){
-        lli x=v[i]-v[i-1];
-        if(x==0){
-           if(m.find(v[i])==m.end()){
-        
-            t[i]=-1;
-            m.clear();
-           }else{
-             t[i]=m[v[i]];
-           }
-        }else if(x==1){
-           if(m.find(v[i])==m.end())m[v[i]]=i;
-        }else{
-       
-            t[i]=-1;
-           m.clear();
-        }
-       
-    }
-    else{
-      if(m.find(v[i])==m.end()){
-      
-        m.clear();
-        t[i]=-1;
-      }else{
-        t[i]=m[v[i]];
-      }
-    }
-
-
-}
-lli ans=0;
-lli prev=0;
-
+vll f(51,0);
 fr(i,n){
-   if(t[i]==-1){
-    prev+=i+1;
-   }else if(t[i]>=0){
-    prev+=(i-t[i])+1;
-   }else{
-    prev+=1;
-   }
- 
-   ans+=prev;
+ f[v[i]]++;
 }
-
- cout<<ans<<'\n';
-
+vll p={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47};
+vll msk(51,0);
+frs(i,2,50){
+  fr(j,15){
+    if(i%p[j]==0){
+        msk[i]|=(1ll<<j);
+    }
+  }
+}
+lli ans=1e18;
+fr(i,1ll<<15){
+    bool bol=true;
+    frs(j,2,50){
+       if(f[j] && (msk[j]&i)==0)bol=false;
+    }
+    if(bol){
+      lli curr=1;
+      fr(k,15){
+        if((i>>k)&1){
+            curr*=p[k];
+        }
+      }
+      ans=min(ans,curr);
+    }
+}
+cout<<ans<<'\n';
 }
 
 int32_t main(){

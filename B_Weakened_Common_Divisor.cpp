@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-12 19:49
+//Date: 2026-03-13 22:19
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -74,69 +74,61 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
 
+//BSDK math snippet hai
+vector<lli> prim(lli x){
+    vll v;
+    for(lli i=2;i*i<=x;i++){
+         if(x%i==0){
+            v.psb(i);
+            while(x%i==0)x/=i;
+         }
+    }
+    if(x>1)v.psb(x);
+    return v;
+}
+
 
 void solve(){
 lli n,k;cin>>n;
-get(v,n);
-map<lli,lli>m;
-
-vll t(n,-2);
-t[0]=-1;
-frs(i,1,n-1){
-    if(v[i]>=v[i-1]){
-        lli x=v[i]-v[i-1];
-        if(x==0){
-           if(m.find(v[i])==m.end()){
-        
-            t[i]=-1;
-            m.clear();
-           }else{
-             t[i]=m[v[i]];
-           }
-        }else if(x==1){
-           if(m.find(v[i])==m.end())m[v[i]]=i;
-        }else{
-       
-            t[i]=-1;
-           m.clear();
-        }
-       
-    }
-    else{
-      if(m.find(v[i])==m.end()){
-      
-        m.clear();
-        t[i]=-1;
-      }else{
-        t[i]=m[v[i]];
-      }
-    }
-
-
-}
-lli ans=0;
-lli prev=0;
-
+vpr p(n);
+lli a,b;
 fr(i,n){
-   if(t[i]==-1){
-    prev+=i+1;
-   }else if(t[i]>=0){
-    prev+=(i-t[i])+1;
-   }else{
-    prev+=1;
-   }
- 
-   ans+=prev;
+  cin>>a>>b;
+  p[i]={a,b};
 }
 
- cout<<ans<<'\n';
+
+vll v=prim(a);
+vll t=prim(b);
+fr(i,t.size())v.psb(t[i]);
+srt(v);
+v.erase(unique(all(v)),v.end());
+if(n==1){
+    cout<<v[0]<<'\n';
+    return;
+}
+fr(j,v.size()){
+    bool bol=true;
+    fr(i,n){
+       a=p[i].ff;
+       b=p[i].ss;
+       if(a%v[j]  && b%v[j])bol=false;
+    }
+    if(bol){
+        cout<<v[j]<<'\n';
+        return;
+    }
+}
+
+no1;
+
+
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
 while(test--){
 solve();
 }
