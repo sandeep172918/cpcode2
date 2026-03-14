@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-14 15:25
+//Date: 2026-03-14 20:01
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -29,8 +29,8 @@
 #define rall(v) v.rbegin(),v.rend()
 #define sq(x) sqrtl(x)
 #define fastio ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
-#define yes cout<<"Alice\n"
-#define no cout<<"Bob\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
 #define no1 cout<<"-1\n"
 #define nl cout<<"\n"
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
@@ -76,39 +76,19 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 //BSDK math snippet hai
 void solve(){
-lli n,k;cin>>n>>k;
-get(a,n);
-get(b,k);
-srt(a);
-lli l=1;
-lli x=mxe(b);
-fr(i,n){
-    l=(l/__gcd(l,a[i]))*a[i];
-    if(l>x){
-        l=x+1;
-        break;
+lli n,k;;
+cin>>n;
+string s;cin>>s;
+s+=s;
+lli ans=0;
+fr(i,n+1){
+    lli curr=1;
+    frs(j,i+1,i+n-1){
+       if(s[j]!=s[j-1])curr++;
     }
+    ans=max(ans,curr);
 }
-vll div(x+10,0);
-fr(i,n){
-    if(a[i]<=x && !div[a[i]] ){
-      for(lli j=a[i];j<=x;j+=a[i]){
-         div[j]=1;
-    }
-   }
-}
-lli aa=0,bb=0,m=0;
-fr(i,k){
-  bool alice=div[b[i]];
-  bool bob=(b[i]%l !=0);
-  if(alice && !bob)aa++;
-  else if(!alice && bob)bb++;
-  else if(alice && bob)m++;
-
-}
-if((aa+(m%2))>bb)yes;
-else no;
-
+cout<<ans<<'\n';
 }
 
 int32_t main(){
