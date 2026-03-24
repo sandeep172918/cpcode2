@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-18 23:59
+//Date: 2026-03-20 18:56
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -73,51 +73,25 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⣧⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
-lli n;
-vll dp;
-vll dist;
-vvll adj;
- 
 
-void dfs(lli node,lli par,lli d){
-   dp[0]+=d;
-   dist[node]=1;
-   for(auto &it:adj[node]){
-    if(it==par)continue;
-    dfs(it,node,d+1);
-    dist[node]+=dist[it];
-   }
- 
-
-}
-void dfs(lli node,lli par){
-    for(auto &it:adj[node]){
-        if(it!=par){
-            dp[it]=dp[node]-dist[it]+n-dist[it];
-            dfs(it,node);
+//BSDK math snippet hai
+void solve(){
+lli n,k;cin>>n>>k;
+get(v,n);
+srt(v);
+while(k--){
+    lli t;cin>>t;
+    if(t==1){
+        lli c;cin>>c;
+        if(c>v.back())v.psb(c);
+        else{
+            v[lower_bound(all(v),c)-v.begin()]=c;
         }
-     
+    }else{
+        lli a,b;cin>>a>>b;
+        cout<<abs(lower_bound(all(v),a)-upper_bound(all(v),b))<<'\n';
     }
 }
-
-void solve(){
-cin>>n;
-adj=vvll(n);
-dist=vll(n);
-dp=vll(n);
-fr(i,n-1){
- lli u,v;cin>>u>>v;
- u--;
- v--;
- adj[u].psb(v);
- adj[v].psb(u);
-}
-
-dfs(0,-1,0);
-dfs(0,-1);
-
-out(dp);
-
 
 }
 

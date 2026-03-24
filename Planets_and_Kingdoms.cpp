@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-18 23:59
+//Date: 2026-03-24 23:50
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -73,50 +73,66 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 ⠀⠀⠀⠀⠀⠀⣧⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
-lli n;
-vll dp;
-vll dist;
-vvll adj;
- 
 
-void dfs(lli node,lli par,lli d){
-   dp[0]+=d;
-   dist[node]=1;
-   for(auto &it:adj[node]){
-    if(it==par)continue;
-    dfs(it,node,d+1);
-    dist[node]+=dist[it];
-   }
- 
+//BSDK math snippet hai
 
+vvll adj,adjr;
+vvll comp;
+vll temp;
+stack<lli>st;
+vll vis;
+void dfs(lli node){
+  vis[node]=1;
+  for(auto &it:adj[node]){
+    if(!vis[it])dfs(it);
+  }
+  st.push(node);
 }
-void dfs(lli node,lli par){
-    for(auto &it:adj[node]){
-        if(it!=par){
-            dp[it]=dp[node]-dist[it]+n-dist[it];
-            dfs(it,node);
-        }
-     
-    }
+void dfs2(lli node){
+  vis[node]=1;
+  for(auto &it:adjr[node]){
+    if(!vis[it])dfs2(it);
+  }
+  temp.psb(node);
 }
 
 void solve(){
-cin>>n;
+lli n,k;cin>>n>>k;
 adj=vvll(n);
-dist=vll(n);
-dp=vll(n);
-fr(i,n-1){
- lli u,v;cin>>u>>v;
- u--;
- v--;
- adj[u].psb(v);
- adj[v].psb(u);
+adjr=vvll(n);
+vis=vll(n,0);
+comp.clear();
+fr(i,k){
+    lli u,v;
+    cin>>u>>v;
+    u--;
+    v--;
+    adj[u].psb(v);
+    adjr[v].psb(u);
 }
+fr(i,n){
+    if(!vis[i])dfs(i);
+}
+vis=vll(n,0);
+while(!st.empty()){
+    lli t=st.top();
+    st.pop();
+    if(!vis[t]) {
+        dfs2(t);
+        comp.psb(temp);
+    }
+    temp.clear();
+}
+vll ans(n);
+n=comp.size();
 
-dfs(0,-1,0);
-dfs(0,-1);
-
-out(dp);
+cout<<n<<'\n';
+fr(i,n){
+    fr(j,comp[i].size()){
+        ans[comp[i][j]]=i+1;
+    }
+}
+out(ans);
 
 
 }
