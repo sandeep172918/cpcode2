@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-29 20:11
+//Date: 2026-03-30 21:47
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -44,22 +44,52 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 
-void solve(){
-lli n=0,k=0,m=0,x=0;cin>>n;
-get(v,n);
-lli ans=0;
-fr(i,n){
-    if(v[i]<=(i+1))ans++;
+
+vector<int> prep(string s) {
+    int n = s.size();
+    vector<int> pi(n, 0);
+
+    int j = 0;
+    for (int i = 1; i < n; i ++) {
+        while (j && s[j] != s[i]) j = pi[j - 1];
+        if (s[j] == s[i]) j ++;
+        pi[i] = j;
+    }
+
+    return pi;
 }
 
-cout<<ans<<'\n';
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    string s, t;
+    int cur;
+
+    getline(cin, s);
+    getline(cin, t);
+    cin >> cur;
+
+    int n = s.size(), m = t.size();
+
+    int l = 1, r = m;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+
+        string tmp = t.substr(0, mid) + "#" + s;
+        auto kmp = prep(tmp);
+
+        int cnt = 0;
+        for (auto &v: kmp) cnt += (v == mid);
+
+        if (cnt >= cur) l = mid + 1;
+        else r = mid - 1;
+    }
+
+    if (r) cout << t.substr(0, r);
+    else cout << "IMPOSSIBLE";
+
+    return 0;
 }
 
-int32_t main(){
-fastio;
-lli test=1;
-cin>>test;
-while(test--){
-solve();
-}
-}

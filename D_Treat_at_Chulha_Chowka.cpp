@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-29 20:11
+//Date: 2026-03-30 17:29
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -47,18 +47,27 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 void solve(){
 lli n=0,k=0,m=0,x=0;cin>>n;
 get(v,n);
+multiset<lli>st;
 lli ans=0;
+fr(i,n)st.insert(v[i]);
 fr(i,n){
-    if(v[i]<=(i+1))ans++;
+    st.extract(v[i]);
+    bool bol=true;
+    fr(j,32){
+       k= (1ll<<j)-v[i];
+       if(st.find(k)!=st.end())bol=false;
+    }
+   // cout<<bol<<' ';
+    if(bol)ans++;
+    st.insert(v[i]);
 }
-
 cout<<ans<<'\n';
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
+
 while(test--){
 solve();
 }

@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-29 20:11
+//Date: 2026-03-30 17:18
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,17 +42,26 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 //BSDK math snippet hai
 
+ // --- fast pow (modular exponentiation) ---
+    static inline lli mod_pow(lli a, lli e, lli m=MOD){
+        lli r = 1 % m;
+        a %= m;
+        while(e){
+            if(e & 1) r = (__int128)r * a % m;
+            a = (__int128)a * a % m;
+            e >>= 1;
+        }
+        return r;
+    }
 
 
 void solve(){
 lli n=0,k=0,m=0,x=0;cin>>n;
-get(v,n);
-lli ans=0;
-fr(i,n){
-    if(v[i]<=(i+1))ans++;
-}
+//get(v,n);
+lli tot=(n-1)*(n-2)/2%MOD;
+lli invalid=((n/2)*(n/2-1)/2%MOD)*3ll%MOD;
+cout<<((tot-invalid+MOD)%MOD)*mod_pow(tot,MOD-2)%MOD<<'\n';
 
-cout<<ans<<'\n';
 }
 
 int32_t main(){

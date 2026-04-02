@@ -48,19 +48,16 @@ void solve(){
 lli n=0,k=0,m=0,x=0;cin>>n;
 get(v,n);
 get(b,n);
-vll g(n-1);
-fr(i,n-1){
- g[i]=__gcd(v[i],v[i+1]);
-}
-lli ans=0;
-if(g[0]!=v[0])ans++;
-frs(i,1,n-2){
-  if(g[i]!=g[i-1])continue;
-  if(g[i]!=v[i])ans++;
-}
-if(g.back()!=v.back())ans++;
-cout<<ans<<'\n';
 
+lli ans=0;
+
+if(v[0]>__gcd(v[0],v[1]))ans++;
+if(v[n-1]>__gcd(v[n-1],v[n-2]))ans++;
+
+frs(i,1,n-2){
+  if(v[i]>lcm(__gcd(v[i-1],v[i]),__gcd(v[i],v[i+1])))ans++;
+}
+cout<<ans<<'\n';
 }
 
 int32_t main(){

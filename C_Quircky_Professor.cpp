@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-29 20:11
+//Date: 2026-03-30 14:02
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,17 +42,26 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 //BSDK math snippet hai
 
+lli check(lli mid){
+    lli sum=0;
+    while(mid){
+        sum+=mid;
+        mid/=10;
+    }
+    return sum;
+}
 
 
 void solve(){
 lli n=0,k=0,m=0,x=0;cin>>n;
-get(v,n);
-lli ans=0;
-fr(i,n){
-    if(v[i]<=(i+1))ans++;
+lli high=n;
+lli low=0;
+while(low<=high){
+  lli mid=(low+high)/2;
+  if(check(mid)<=n)low=mid+1;
+  else high=mid-1;
 }
-
-cout<<ans<<'\n';
+cout<<n-high<<'\n';
 }
 
 int32_t main(){

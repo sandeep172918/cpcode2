@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-03-29 20:11
+//Date: 2026-03-31 13:27
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -45,14 +45,27 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-lli n=0,k=0,m=0,x=0;cin>>n;
-get(v,n);
-lli ans=0;
-fr(i,n){
-    if(v[i]<=(i+1))ans++;
+lli n=0,k=0,m=0,x=0;cin>>n>>k;
+//get(v,n);
+string s;cin>>s;
+lli ans=2LL;
+lli ans2=2ll;
+if(s[0]=='0' || s[n-1]=='0'){
+    no1;
+    return;
 }
+frs(i,1,n-2){
+    if(s[i]=='0'){
+        ans=ans*i%MOD;
+        ans2=ans2*i%k;
+    }else{
+        ans=ans*2ll%MOD;
+        ans2=ans2*2ll%k;
+    }
+}
+if(ans2)cout<<ans<<'\n';
+else no1;
 
-cout<<ans<<'\n';
 }
 
 int32_t main(){
