@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-04-03 12:13
+//Date: 2026-04-03 02:25
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,33 +42,31 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 //BSDK math snippet hai
 
+vvll adj;
+vll ans;
+lli dfs(lli node,lli par){
+
+}
 
 void solve(){
-map<lli,lli>m;
-m[2ll]=0;
-m[3ll]=1;
-cout<<m.size()<<'\n';
-if(m[0]){
-    cout<<"hi ";
-    cout<<m.size()<<'\n';
-}else{
-    cout<<"bye ";
-    cout<<m.size()<<'\n';
-}
-// multiset<lli>st;
-// st.insert(0);
-// st.insert(1);
-// st.insert(1);
-// st.insert(0);
-// st.insert(2);
-// st.insert(3);
-
+lli n=0,k=0,m=0,x=0;cin>>n;
+get(v,n);
+ans=vll(n);
+adj=vvll(n+1);
+fr(i,n-1){
+    lli u,v;cin>>u>>v;
+    u--;
+    v--;
+    adj[u].psb(v);
+    adj[v].psb(u);
 }
 
+}
 
 int32_t main(){
 fastio;
 lli test=1;
+cin>>test;
 while(test--){
 solve();
 }

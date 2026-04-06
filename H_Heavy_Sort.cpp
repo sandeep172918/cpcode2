@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-04-03 12:13
+//Date: 2026-04-06 17:15
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -43,28 +43,64 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 //BSDK math snippet hai
 
 
+class FenwickTree{
+private:
+    vector<lli>bit;
+    lli n;
+
+public:
+    FenwickTree(lli size){
+        n=size+1;
+        bit.assign(n,0);
+    }
+
+    void update(lli i,lli val){
+        for(++i;i<n;i+=(i& -i))
+            bit[i]+=val;
+    } 
+
+    lli query(lli i){
+        lli sum=0;
+        for (++i;i>0;i-=(i& -i))
+            sum+=bit[i];
+        return sum;
+    }
+
+    lli range_query(lli l,lli r) {
+        return query(r)-query(l-1);
+    }
+    
+     lli kth(lli k){ 
+        lli idx=0, bitt=1;
+        while((bitt<<1)<=n) bitt<<=1;
+        for(lli step=bitt; step; step>>=1){
+            lli nxt=idx+step;
+            if(nxt<=n && bit[nxt]<k){ k-=bit[nxt]; idx=nxt; }
+        }
+        return idx+1;
+    }
+};
+
 void solve(){
-map<lli,lli>m;
-m[2ll]=0;
-m[3ll]=1;
-cout<<m.size()<<'\n';
-if(m[0]){
-    cout<<"hi ";
-    cout<<m.size()<<'\n';
-}else{
-    cout<<"bye ";
-    cout<<m.size()<<'\n';
+lli n=0,k=0,m=0,x=0;cin>>n;
+FenwickTree ft(n);
+get(h,n);
+get(w,n);
+vvll v(n);
+fr(i,n){
+    v[i]={h[i],i,w[i]};
 }
-// multiset<lli>st;
-// st.insert(0);
-// st.insert(1);
-// st.insert(1);
-// st.insert(0);
-// st.insert(2);
-// st.insert(3);
+srt(v);
+lli ans=0;
+fr(i,n){
+  lli wt=v[i][2];
+  lli id=v[i][1];
+  ans+=ft.range_query(id,n-1)*wt;
+  ft.update(id,wt);
+}
+cout<<ans<<'\n';
 
 }
-
 
 int32_t main(){
 fastio;

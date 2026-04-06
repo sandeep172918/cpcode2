@@ -77,10 +77,12 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 class Segment_Tree{
    struct node{
     lli sum;
-    lli lazy;
+    lli max_pref;
+
+    
     node(){
         sum=0;
-        lazy=0;
+        max_pref=0;
     }
    };
 
@@ -99,6 +101,8 @@ class Segment_Tree{
     node merge(node a,node b){ //isme lazy nhi sochna hota
         node temp;
         temp.sum=a.sum+b.sum;
+        temp.max_pref= max(a.sum+b.max_pref,a.max_pref);
+        temp.max_pref=max(0ll,temp.max_pref);
         return temp;
     }
 
@@ -106,37 +110,23 @@ class Segment_Tree{
     void build(lli id,lli l,lli r){
         if(l==r){
             t[id].sum=v[l];
-            t[id].lazy=0;
+            t[id].max_pref=max(0ll,v[l]);
             return;
         }
         lli mid=(l+r)/2;
         build(2*id,l,mid);
         build(2*id+1,mid+1,r);
         t[id]=merge(t[2*id],t[2*id+1]);
-    }
-    
-    void apply(lli id,lli l,lli r){
-         t[id].sum+=((r-l+1)*t[id].lazy);
-         return;
-    }
-
-    void push(lli id,lli l,lli r){
-        if(t[id].lazy !=0){
-           apply(id,l,r);
-           t[2*id].lazy+=t[id].lazy;
-           t[2*id+1].lazy+=t[id].lazy;
-        }
-        t[id].lazy=0;
-    }
-
+    } 
+  
     void update(lli id,lli l,lli r,lli lq,lli rq,lli val){
-     // push(id,l,r);
+     
       if(rq<l || r<lq){
         return;
       }
       if(lq<=l && r<=rq){
-        t[id].lazy+=val;
-      //  push(id,l,r);
+        t[id].sum=val;
+        t[id].max_pref=max(0ll,val);
         return;
       }
       lli mid=(l+r)/2;
@@ -146,7 +136,7 @@ class Segment_Tree{
     }
     
     node query(lli id,lli l,lli r,lli lq,lli rq){
-      //push(id,l,r);
+      
       if(rq<l || r<lq){
         return node();
       }
@@ -158,7 +148,7 @@ class Segment_Tree{
     }
     lli quer(lli l,lli r){
         node ans=query(1,0,n-1,l,r);
-        return ans.sum;
+        return max(0ll,ans.max_pref);
     }
 };
 
@@ -166,14 +156,24 @@ void solve(){
 lli n,k;cin>>n>>k;
 get(v,n);
 Segment_Tree st(v);
-
-
+while(k--){
+  lli t;cin>>t;
+  if(t==1){
+    lli id,val;
+    cin>>id>>val;
+    id--;
+    st.update(1,0,n-1,id,id,val);
+  }else{
+    lli a,b;
+    cin>>a>>b;
+    cout<<st.quer(a-1,b-1)<<'\n';
+  }
+}
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-
 while(test--){
 solve();
 }
