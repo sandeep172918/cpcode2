@@ -1,6 +1,9 @@
+//Author:coding_with_alzheimer
+//Date: 2026-05-02 17:24
 
 #include <bits/stdc++.h>
-
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 #define lli long long int
 #define fr(i,n) for(lli i=0;i<n;i++)
 #define frs(i,a,b) for(lli i=a;i<=b;i++)
@@ -15,6 +18,8 @@
 #define get(v,n) vll v(n);fr(i,n)cin>>v[i]
 #define ff first
 #define ss second
+#define tr true
+#define fs false
 #define bitc(x) __builtin_popcountll(x)
 #define mxe(v)  *max_element(v.begin(),v.end())
 #define mne(v)  *min_element(v.begin(),v.end())
@@ -32,18 +37,26 @@
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
 const int MOD=1e9+7;
- 
+using namespace __gnu_pbds;
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+//BSDK math snippet hai
+
+
+
 void solve(){
-lli n,k;cin>>n>>k;
+lli n=0,k=0,m=0,x=0;cin>>n>>k>>m;
 //get(v,n);
+string s;cin>>s;
+cout<<n+k+m<<' '<<s<<'\n';
 
 }
 
 int32_t main(){
 fastio;
-lli tt=1;
-cin>>tt;
-while(tt--){
+lli test=1;
+// cin>>test;
+while(test--){
 solve();
 }
 }

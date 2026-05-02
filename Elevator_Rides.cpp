@@ -1,6 +1,9 @@
+//Author:coding_with_alzheimer
+//Date: 2026-04-08 18:48
 
 #include <bits/stdc++.h>
-
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 #define lli long long int
 #define fr(i,n) for(lli i=0;i<n;i++)
 #define frs(i,a,b) for(lli i=a;i<=b;i++)
@@ -15,6 +18,8 @@
 #define get(v,n) vll v(n);fr(i,n)cin>>v[i]
 #define ff first
 #define ss second
+#define tr true
+#define fs false
 #define bitc(x) __builtin_popcountll(x)
 #define mxe(v)  *max_element(v.begin(),v.end())
 #define mne(v)  *min_element(v.begin(),v.end())
@@ -32,18 +37,39 @@
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
 const int MOD=1e9+7;
- 
-void solve(){
-lli n,k;cin>>n>>k;
-//get(v,n);
+using namespace __gnu_pbds;
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+void solve(){
+lli n,k;    
+cin>>n>>k;
+get(v,n);
+lli m=1ll<<n;
+vpr dp(m,{1e18,1e18});
+dp[0]={1,0};
+fr(i,m){
+    fr(j,n){
+        if((i>>j)&1ll){
+            //mask s=doesnt have j as we going to put it
+            auto[ans,wt]=dp[i^(1ll<<j)];
+            if(wt+v[j]>k){
+             wt=v[j];
+             ans++;
+            }else{
+             wt+=v[j];
+            }
+            dp[i]=min(dp[i],{ans,wt});
+        }
+    }
+}
+cout<<dp[m-1].ff;
 }
 
 int32_t main(){
 fastio;
-lli tt=1;
-cin>>tt;
-while(tt--){
+lli test=1;
+while(test--){
 solve();
 }
 }

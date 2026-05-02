@@ -1,6 +1,9 @@
+//Author:coding_with_alzheimer
+//Date: 2026-05-02 17:47
 
 #include <bits/stdc++.h>
-
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 #define lli long long int
 #define fr(i,n) for(lli i=0;i<n;i++)
 #define frs(i,a,b) for(lli i=a;i<=b;i++)
@@ -15,6 +18,8 @@
 #define get(v,n) vll v(n);fr(i,n)cin>>v[i]
 #define ff first
 #define ss second
+#define tr true
+#define fs false
 #define bitc(x) __builtin_popcountll(x)
 #define mxe(v)  *max_element(v.begin(),v.end())
 #define mne(v)  *min_element(v.begin(),v.end())
@@ -31,19 +36,39 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=1e9+7;
- 
-void solve(){
-lli n,k;cin>>n>>k;
-//get(v,n);
+const int MOD=998244353;
+using namespace __gnu_pbds;
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+//BSDK math snippet hai
 
+
+
+void solve(){
+string s;cin>>s;
+lli prev=1;
+lli n=s.size();
+lli ans=0;
+lli final=n*(n+1)/2;
+final%=MOD;
+// cout<<final<<'\n';
+frs(i,1,n-1){
+    if(s[i]==s[i-1]){
+        // cout<<prev<<' '<<n-i<<'\n';
+      ans+=prev*(n-i);
+      ans%=MOD;
+      prev=0;
+    }
+    prev++;
+}
+cout<<(final-ans+MOD)%MOD<<'\n';
 }
 
 int32_t main(){
 fastio;
-lli tt=1;
-cin>>tt;
-while(tt--){
+lli test=1;
+// cin>>test;
+while(test--){
 solve();
 }
 }
