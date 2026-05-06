@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-02 18:31
+//Date: 2026-05-06 12:21
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,7 +36,7 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=998244353;
+const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -45,34 +45,35 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-string s;cin>>s;
-lli n=s.size();
-lli ans=0;
-s+='*';
-vll dp(26,0);
-rfr(i,n-1,0){
-   lli tot=1;
-   lli c=s[i]-'a';
-   fr(j,26){
-    if(j!=c)
-    tot+=dp[j]%MOD;
-   }
-//    if(s[i]==s[i+1])tot=dp[c]+1;
-   dp[c]+=tot%MOD;
-//    out(dp);
+lli n=0,k=0;string a,b;
+cin>>n;
+//get(v,n);
+cin>>a;
+cin>>b;
+lli aa=0,bb=0;
+fr(i,n){
+    if(a[i]==b[i]){
+        if(a[i]=='('){aa++;bb++;}
+        else {aa--;bb--;}
+    }else{
+        if(aa<bb){aa++;bb--;}
+        else {bb++;aa--;}
+    }
+    if(aa<0 || bb<0){
+        no;
+        return;
+    }
 }
-fr(i,26)ans+=dp[i]%MOD;
-cout<<ans%MOD<<'\n';
-}
+if(aa==0 && bb==0)yes;
+else no;
 
+}
 
 int32_t main(){
 fastio;
 lli test=1;
-// cin>>test;
+cin>>test;
 while(test--){
 solve();
 }
 }
-
-

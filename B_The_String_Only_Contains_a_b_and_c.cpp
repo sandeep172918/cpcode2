@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-02 18:31
+//Date: 2026-05-06 00:33
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,7 +36,7 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=998244353;
+const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -45,34 +45,90 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-string s;cin>>s;
-lli n=s.size();
-lli ans=0;
-s+='*';
-vll dp(26,0);
-rfr(i,n-1,0){
-   lli tot=1;
-   lli c=s[i]-'a';
-   fr(j,26){
-    if(j!=c)
-    tot+=dp[j]%MOD;
-   }
-//    if(s[i]==s[i+1])tot=dp[c]+1;
-   dp[c]+=tot%MOD;
-//    out(dp);
+lli n=0,k=0;string s;
+cin>>n;
+//get(v,n);
+cin>>s;
+if(n&1){
+    no;return;
 }
-fr(i,26)ans+=dp[i]%MOD;
-cout<<ans%MOD<<'\n';
+lli a=count(all(s),'a');
+lli b=count(all(s),'b');
+lli c=count(all(s),'c');
+lli tot=(a>0)+(b>0)+(c>0);
+// cout<<tot<<' ';
+if(tot==1){
+    no;
+    return;
 }
+if(tot==2){
+    yes;
+    return;
+}
+if(s[0]==s[1]  || s[n-2]==s[n-1]){
+    yes;
+    return;
+}
+set<lli>st;
+vpr p;
+bool bol=false;
+lli l,r;
+fr(i,n){
+    st.insert(s[i]);
+    bol=false;
 
+    if(st.size()==2){
+        bol=true;
+        // st.clear();
+    }else if(st.size()==3){
+       st.clear();
+       st.insert(s[i]);
+    }
+}
+// cout<<bol;
+if(bol){
+    yes;
+    return;
+}
+bol=true;
+st.clear();
+fr(i,n){
+ st.insert(s[i]);
+ if(st.size()==2 && bol){
+    bol=false;
+    l=i-1;
+
+ }
+ if(st.size()==3){
+  st.clear();  
+  r=i;
+  p.push_back({l,r});
+  bol=true;
+
+ }
+}
+lli x=p.size();
+l=0,r=n-1;
+frs(i,l,p[0].ff-1)x--;
+frs(i,p.back().ss+1,r)x--;
+frs(i,1,p.size()-1){
+  l=p[i-1].ss+1;
+  r=p[i].ff-1;
+  x-=(r-l+1);
+}
+if(x<=0)yes;
+else no;
+
+}
 
 int32_t main(){
 fastio;
 lli test=1;
-// cin>>test;
+cin>>test;
 while(test--){
 solve();
 }
 }
+
 
 

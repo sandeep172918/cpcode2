@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-02 18:31
+//Date: 2026-05-05 17:28
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,7 +36,7 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=998244353;
+const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -45,26 +45,17 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-string s;cin>>s;
-lli n=s.size();
-lli ans=0;
-s+='*';
-vll dp(26,0);
-rfr(i,n-1,0){
-   lli tot=1;
-   lli c=s[i]-'a';
-   fr(j,26){
-    if(j!=c)
-    tot+=dp[j]%MOD;
-   }
-//    if(s[i]==s[i+1])tot=dp[c]+1;
-   dp[c]+=tot%MOD;
-//    out(dp);
+lli n=0,k=0,m=0,x=0;cin>>n;
+//get(v,n);
+vll dp(n+1);
+dp[0]=1;
+dp[1]=1;
+dp[2]=2;
+frs(i,3,n){
+   dp[i]=2*dp[i-1]+dp[i-3];
 }
-fr(i,26)ans+=dp[i]%MOD;
-cout<<ans%MOD<<'\n';
+cout<<dp[n];
 }
-
 
 int32_t main(){
 fastio;
@@ -74,5 +65,3 @@ while(test--){
 solve();
 }
 }
-
-
