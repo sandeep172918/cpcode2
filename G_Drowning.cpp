@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-07 19:14
+//Date: 2026-05-08 00:54
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,54 +36,42 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=998244353;
+const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-//BSDK math snippet hai
 
-bool cmp(pr a,pr b){
-    return (a.ff*b.ss) < (b.ff*a.ss);
-}
- // --- fast pow (modular exponentiation) ---
-    static inline lli mod_pow(lli a, lli e, lli m=MOD){
-        lli r = 1 % m;
-        a %= m;
-        while(e){
-            if(e & 1) r = (__int128)r * a % m;
-            a = (__int128)a * a % m;
-            e >>= 1;
-        }
-        return r;
-    }
+
 
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
-get(a,n);
-get(b,n);
-vpr p;
-fr(i,n){
-    fr(j,n){
-        if(i!=j)p.push_back({b[i],b[j]});
-    }
-}
-sort(all(p),cmp);
-lli sum=0;
-fr(i,n){
-    frs(j,i+1,n-1){
-        pr tar={a[j],a[i]};
-        sum+=(p.end()-upper_bound(all(p),tar,cmp));
-        sum%=MOD;
-    }
-}
-lli final=sum%MOD*mod_pow(n*(n-1),MOD-2)%MOD;
-final%=MOD;
-cout<<final<<'\n';
 //cin>>s;
-
+vll pref(n+1);
+frs(i,1,n){
+    lli x;cin>>x;
+    if(i&1){
+        pref[i]=pref[i-1]+x;
+    }else{
+        pref[i]=pref[i-1]-x;
+    }
 }
+ordered_set<pr>ev,odd;
+ev.insert({0,0});
+lli ans=0;
+frs(r,1,n){
+    lli curr=pref[r];
+    if(r&1)
+      ans+=ev.order_of_key({curr,-1});
+    else   
+      ans+=odd.size()-odd.order_of_key({curr,1e18});
+    if(r&1)odd.insert({curr,r});
+    else ev.insert({curr,r});
+}
+cout<<ans<<'\n';
+}
+
 
 int32_t main(){
 fastio;

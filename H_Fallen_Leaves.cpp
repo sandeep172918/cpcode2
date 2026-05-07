@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-07 19:14
+//Date: 2026-05-07 20:37
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -36,53 +36,54 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=998244353;
+const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 //BSDK math snippet hai
 
-bool cmp(pr a,pr b){
-    return (a.ff*b.ss) < (b.ff*a.ss);
-}
- // --- fast pow (modular exponentiation) ---
-    static inline lli mod_pow(lli a, lli e, lli m=MOD){
-        lli r = 1 % m;
-        a %= m;
-        while(e){
-            if(e & 1) r = (__int128)r * a % m;
-            a = (__int128)a * a % m;
-            e >>= 1;
-        }
-        return r;
-    }
+vvll adj;
+vll cnt;
+vll sc;
 
+void dfs(lli node,lli par){
+    if(adj[node].size()==1)cnt[node]=1;
+    for(auto &it:adj[node]){
+        if(it==par)continue;
+        dfs(it,node);
+        cnt[node]+=cnt[it];
+    }
+    lli curr=0;
+    for(auto &it:adj[node]){
+        if(it==par)continue;
+       lli x=(cnt[it]%2==1  ? 1:-1);
+       curr=max(curr,sc[it]+x);
+       
+    }
+    sc[node]=curr;
+}
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
-get(a,n);
-get(b,n);
-vpr p;
-fr(i,n){
-    fr(j,n){
-        if(i!=j)p.push_back({b[i],b[j]});
-    }
+adj=vvll(n+1);
+cnt=vll(n+1);
+sc=vll(n+1);
+fr(i,n-1){
+    lli u,v;
+    cin>>u>>v;
+    adj[u].psb(v);
+    adj[v].psb(u);
 }
-sort(all(p),cmp);
-lli sum=0;
-fr(i,n){
-    frs(j,i+1,n-1){
-        pr tar={a[j],a[i]};
-        sum+=(p.end()-upper_bound(all(p),tar,cmp));
-        sum%=MOD;
-    }
+dfs(1,0);
+lli ans=0;
+frs(i,2,n){
+  ans+=(cnt[i]&1);
 }
-lli final=sum%MOD*mod_pow(n*(n-1),MOD-2)%MOD;
-final%=MOD;
-cout<<final<<'\n';
-//cin>>s;
-
+if(cnt[1]&1){
+    ans=ans-sc[1];
+}
+cout<<ans<<'\n';
 }
 
 int32_t main(){
