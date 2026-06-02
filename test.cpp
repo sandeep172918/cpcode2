@@ -1,49 +1,67 @@
+#include <iostream>
+#include <string>
 
-#include <bits/stdc++.h>
-
-#define lli long long int
-#define fr(i,n) for(lli i=0;i<n;i++)
-#define frs(i,a,b) for(lli i=a;i<=b;i++)
-#define rfr(i,b,a) for(lli i=b;i>=a;i--)
-#define srt(v) sort(v.begin(),v.end())
-#define rsrt(v) sort(v.rbegin(),v.rend())
-#define pr pair<lli,lli>
-#define vll vector<lli>
-#define vbl vector<bool>
-#define vpr vector<pr>
-#define vvll vector<vector<lli>>
-#define get(v,n) vll v(n);fr(i,n)cin>>v[i]
-#define ff first
-#define ss second
-#define bitc(x) __builtin_popcountll(x)
-#define mxe(v)  *max_element(v.begin(),v.end())
-#define mne(v)  *min_element(v.begin(),v.end())
-#define psb(a) push_back(a)
-#define ppb pop_back()
-#define all(v) v.begin(),v.end()
-#define rall(v) v.rbegin(),v.rend()
-#define sq(x) sqrtl(x)
-#define fastio ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
-#define no1 cout<<"-1\n"
-#define nl cout<<"\n"
-#define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
-#define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=1e9+7;
- 
-void solve(){
-lli n,k;cin>>n>>k;
-//get(v,n);
 
+void solve() {
+    long long n_in, x_in, s_in;
+    cin >> n_in >> x_in >> s_in;
+    string u;
+    cin >> u;
+
+    __int128 eia = 0;
+    __int128 E_tables = x_in;
+    __int128 P_seats = 0;
+    __int128 A_P = 0;
+    __int128 ans = 0;
+    __int128 s = s_in;
+
+    for (char c : u) {
+        if (c == 'I') {
+            if (E_tables > 0) {
+                E_tables--;
+                P_seats += s - 1;
+                ans++;
+                eia++;
+            }
+        } else if (c == 'E') {
+            if (P_seats > 0) {
+                P_seats--;
+                ans++;
+                eia++;
+            } else if (A_P > 0 && E_tables > 0) {
+                A_P--;
+                E_tables--;
+                P_seats += s - 1;
+                ans++;
+                eia++;
+            }
+        } else if (c == 'A') {
+            if (P_seats > 0) {
+                P_seats--;
+                A_P++;
+                ans++;
+                eia++;
+            } else if (E_tables > 0) {
+                E_tables--;
+                P_seats += s - 1;
+                ans++;
+                eia++;
+            }
+        }
+    }
+
+    cout << (long long)ans << "\n";
 }
 
-int32_t main(){
-fastio;
-lli tt=1;
-cin>>tt;
-while(tt--){
-solve();
-}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int t;
+    if (cin >> t) {
+        while (t--) {
+            solve();
+        }
+    }
+    return 0;
 }

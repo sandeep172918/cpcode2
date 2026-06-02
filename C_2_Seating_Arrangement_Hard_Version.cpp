@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-11 20:10
+//Date: 2026-05-30 20:26
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,25 +41,49 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+
+
 void solve(){
-lli n=0,k=0;string s;
-cin>>n;
-get(v,n);
-auto t=v;
-srt(t);
-lli prev=0;
+lli n=0,k=0,x,y;string s;
+cin>>n>>x>>y;
+//get(v,n);
+cin>>s;
 lli ans=0;
+lli p=0,ap=0;
 fr(i,n){
-    k=prev+v[i]-t[i];
-    ans+=k;
-    prev=k;
+    char c=s[i];
+    if(c=='I'){
+        if(x>0){
+            x--;
+            p+=y-1;
+            ans++;
+        }
+    }else if(c=='E'){
+        if(p>0){
+            p--;
+            ans++;
+        }else if(ap>0 && x>0){
+            ap--;
+            x--;
+            p+=y-1;
+            ans++;
+
+        }
+    }else if(c=='A'){
+        if(p>0){
+            p--;
+            ap++;
+            ans++;
+        }else if(x>0){
+           x--;
+           p+=y-1;
+           ans++;
+        }
+    }
+  
 }
-lli maxi=0;
-fr(i,n){
-    lli id=lower_bound(all(t),v[i])-t.begin();
-    maxi=max(maxi,i-id);
-}
-cout<<ans+maxi<<'\n';
+cout<<ans<<'\n';
+
 
 }
 

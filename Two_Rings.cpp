@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-11 20:10
+//Date: 2026-05-30 17:33
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -29,8 +29,8 @@
 #define rall(v) v.rbegin(),v.rend()
 #define sq(x) sqrtl(x)
 #define fastio ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
+#define yes cout<<"Yes\n"
+#define no cout<<"No\n"
 #define no1 cout<<"-1\n"
 #define nl cout<<"\n"
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
@@ -41,25 +41,25 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+
+
 void solve(){
 lli n=0,k=0;string s;
-cin>>n;
-get(v,n);
-auto t=v;
-srt(t);
-lli prev=0;
-lli ans=0;
-fr(i,n){
-    k=prev+v[i]-t[i];
-    ans+=k;
-    prev=k;
+lli x1,y1,r1,x2,y2,r2;
+cin>>x1>>y1>>r1>>x2>>y2>>r2;
+double d=(x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+cout<<d<<' ';
+d=sqrt(d);
+double c=r1+r2;
+cout<<d<<' '<<c<<'\n';
+if(d>c){no;return;}
+if(r1<r2){
+    if((d+(double)r1)<(double)r2){no;return;}
+}else{
+    if((d+(double)r2)<(double)r1){no;return;}
+
 }
-lli maxi=0;
-fr(i,n){
-    lli id=lower_bound(all(t),v[i])-t.begin();
-    maxi=max(maxi,i-id);
-}
-cout<<ans+maxi<<'\n';
+yes;
 
 }
 

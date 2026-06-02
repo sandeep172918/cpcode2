@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-05-11 20:10
+//Date: 2026-05-30 20:56
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,25 +41,21 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+
+
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
 get(v,n);
-auto t=v;
-srt(t);
-lli prev=0;
-lli ans=0;
+//cin>>s;
+lli curr=0,mini=1e18;
 fr(i,n){
-    k=prev+v[i]-t[i];
-    ans+=k;
-    prev=k;
+  curr+=v[i];
+  k=curr/(i+1);
+  if(k<mini)mini=k;
+  cout<<mini<<' ';
 }
-lli maxi=0;
-fr(i,n){
-    lli id=lower_bound(all(t),v[i])-t.begin();
-    maxi=max(maxi,i-id);
-}
-cout<<ans+maxi<<'\n';
+nl;
 
 }
 
