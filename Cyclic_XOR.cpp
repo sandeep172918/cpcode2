@@ -1,9 +1,6 @@
-//Author:coding_with_alzheimer
-//Date: 2026-06-02 20:10
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+
 #define lli long long int
 #define fr(i,n) for(lli i=0;i<n;i++)
 #define frs(i,a,b) for(lli i=a;i<=b;i++)
@@ -18,8 +15,6 @@
 #define get(v,n) vll v(n);fr(i,n)cin>>v[i]
 #define ff first
 #define ss second
-#define tr true
-#define fs false
 #define bitc(x) __builtin_popcountll(x)
 #define mxe(v)  *max_element(v.begin(),v.end())
 #define mne(v)  *min_element(v.begin(),v.end())
@@ -36,25 +31,42 @@
 #define out(v) fr(i,v.size())cout<<v[i]<<" ";nl
 #define srtp(v) sort(all(v),[](const pr& a,const pr& b){if(a.ff== b.ff)return a.ss>b.ss; return a.ff<b.ff;});
 using namespace std;
-const int MOD=1e9+7;
-using namespace __gnu_pbds;
-template <typename T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-
+const int MOD=998244353;
+  // --- fast pow (modular exponentiation) ---
+     static inline lli mod_pow(lli a, lli e, lli m=MOD){
+         lli r = 1 % m;
+         a %= m;
+         while(e){
+             if(e & 1) r = (__int128)r * a % m;
+             a = (__int128)a * a % m;
+             e >>= 1;
+         }
+         return r;
+     }
+ 
 void solve(){
-lli n=0,k=0;string s;
-cin>>n>>k;
+lli n,k;cin>>n>>k;
 //get(v,n);
-//cin>>s;
-
+if(n%3){
+   cout<<"1\n";
+    return;
+}
+lli p=0;
+lli t=n;
+while(t%2==0){
+  p++;
+    t/=2;
+} 
+lli d=1ll<<min(p,k);
+lli e=2ll*d*k;
+cout<<mod_pow(2,e)<<'\n';
 }
 
 int32_t main(){
 fastio;
-lli test=1;
-cin>>test;
-while(test--){
+lli tt=1;
+cin>>tt;
+while(tt--){
 solve();
 }
 }
