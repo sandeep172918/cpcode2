@@ -1,0 +1,71 @@
+class Solution {
+public:
+    using ll = long long;
+    const static int mod = 1000000007;
+    const static int MAXN = 100001;
+    const static int LOG = 17;
+    int up[MAXN][LOG];
+    vector<int> level;
+    void dfs(int u, int p, vector<vector<int>>& g, int lvl) {
+        level[u] = lvl;
+        up[u][0] = p;
+        for (int i = 1; i < LOG; i++) {
+            if (up[u][i - 1] != -1)
+                up[u][i] = up[up[u][i - 1]][i - 1];
+        }
+        for (auto& v : g[u]) {
+            if (v == p)
+                continue;
+            dfs(v, u, g, lvl + 1);
+        }
+    }
+    int lift(int a, int k) {
+        for (int i = 0; i < LOG; i++) {
+            if (k & (1 << i))
+                a = up[a][i];
+        }
+        return a;
+    }
+    int getLCA(int a, int b) {
+        if (level[a] > level[b])
+            swap(a, b);
+        int diff = level[b] - level[a];
+        b = lift(b, diff);
+
+        if (a == b)
+            return a;
+
+        for (int i = LOG - 1; i >= 0; i--) {
+            if (up[a][i] != up[b][i]) {
+                a = up[a][i];
+                b = up[b][i];
+            }
+        }
+        return up[a][0];
+    }
+    int dist(int a, int b) {
+        int lca = getLCA(a, b);
+        return level[a] + level[b] - 2 * level[lca];
+    }
+    vector<int> assignEdgeWeights(vector<vector<int>>& edges,
+                                  vector<vector<int>>& queries) {
+        int n = edges.size() + 1;
+        vector<vector<int>> g(n + 1);
+        for (auto& e : edges) {
+            g[e[0]].push_back(e[1]);
+            g[e[1]].push_back(e[0]);
+        }
+        level.resize(n + 1);
+        vector<ll> pow(2*n+1,1);
+        for(int i=1;i<=2*n;i++)
+           pow[i]=(2*pow[i-1])%mod;
+        memset(up, -1, sizeof(up));
+        dfs(1,0,g,0);
+        vector<int> res;
+        for (auto& q : queries) {
+            int d = dist(q[0], q[1]);
+            res.push_back((d == 0) ? 0 : pow[d - 1]);
+        }
+        return res;
+    }
+};

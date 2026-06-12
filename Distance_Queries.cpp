@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-06-11 10:16
+//Date: 2026-06-11 10:29
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -128,16 +128,6 @@ lli lca(lli u,lli v){
     return up[u][0];
 }
 
-lli lca2(lli u,lli v){
-   if(is_ancestor(u,v)) return u;
-   if(is_ancestor(v,u)) return v;
-   rfr(j,LOG-1,0){
-    if(!is_ancestor(up[u][j],v))
-          u=up[u][j];
-   }
-   return up[u][0];
-}
-
 lli dist(lli u,lli v){
  lli w=lca(u,v);
   return depth[u]+depth[v]-2*depth[w];
@@ -150,19 +140,29 @@ lli weighted_dist(lli u,lli v){
 
 };
 
-
 void solve(){
 lli n=0,k=0;string s;
 cin>>n>>k;
-//get(v,n);
-//cin>>s;
+lli u,v;
+vvll adj(n+1);
+fr(i,n-1){
+    cin>>u>>v;
+    adj[u].psb(v);
+    adj[v].psb(u);
+}
+
+LCA l(n,adj);
+fr(i,k){
+    cin>>u>>v;
+    cout<<l.dist(u,v)<<'\n';
+}
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
+// cin>>test;
 while(test--){
 solve();
 }
