@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-06-13 07:36
+//Date: 2026-06-16 23:13
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,52 +41,66 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+const int N=1e5+18;
+int n;
+vvll adj(N);
+vector<char> ans(N);
+vector<bool> vis(N);
+vll sz(N);
 
-bool vis[6001][6001];
+void dfs(lli u,lli par=-1){
+    sz[u]=1;
+    for(auto &it:adj[u]){
+       if(it==par || vis[it])continue;
+       dfs(it,u);
+       sz[u]+=sz[it];
+    }
+}
+
+lli find_cent(lli siz,lli u,lli par=-1){
+    for(auto &it:adj[u]){
+        if(it!=par && !vis[it] && sz[it]*2>siz){
+            return find_cent(siz,it,u);
+        }
+    }
+    return u;
+}
+
+void solvee(lli u,char c){
+    dfs(u);
+    lli ct=find_cent(sz[u],u);
+    ans[ct]=c;
+    vis[ct]=true;
+    for(auto &it:adj[ct]){
+        if(!vis[it])solvee(it,c+1);
+    }
+
+}
+
+
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
-get(v,n);
+//get(v,n);
 //cin>>s;
-fr(i,n+1){
-    fr(j,n+1){
-        vis[i][j]=false;
-    }
+fr(i,n-1){
+    lli u,v;cin>>u>>v;
+    u--;
+    v--;
+    adj[u].psb(v);
+    adj[v].psb(u);
 }
-fr(i,n){
-    lli mn=v[i];
-    lli mx=v[i];
-    vector<bool>seen(n+1,false);
-    frs(j,i,n-1){
-        if(seen[v[j]])break;
-        seen[v[j]]=true;
-        mn=min(mn,v[j]);
-        mx=max(mx,v[j]);
-        if(mx-mn==j-i)vis[mn][mx]=true;
-    }
-}
-lli ans=0;
-frs(x,1,n){
-    frs(y,x,n){
-      if(vis[x][y]){
-        lli l=y-x+1;
-        lli xx=y+1;
-        lli yy=y+l;
-        if(yy<=n && vis[xx][yy]){
-            ans=max(ans,l);
-        }
-      }
-    }
-}
-cout<<ans<<'\n';
+solvee(0,'A');
+fr(i,n)cout<<ans[i]<<' ';
+nl;
 
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-cin>>test;
+// cin>>test;
 while(test--){
 solve();
 }
