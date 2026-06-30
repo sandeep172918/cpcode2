@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-06-21 15:51
+//Date: 2026-06-29 21:50
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -39,21 +39,28 @@ using namespace std;
 const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
-using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
-class Solution {
-public:
-    long long countMajoritySubarrays(vector<int>& nums, int target) {
-        ordered_set<lli>st;
-        st.insert(0);
-        lli curr=0;
-        lli ans=0;
-        fr(i,nums.size()){
-          curr+=(nums[i]==target?1:-1);
-          ans+=st.order_of_key(curr);
-        }
-        return ans;
-    }
-};
 
+void solve(){
+lli n=0,k=0;string s;
+cin>>n;
+get(v,n);
+//cin>>s;
+lli ans=v[n-1];
+rfr(i,n-2,0){
+  if(v[i]==1 && v[i]<=v[i+1]){}
+  else ans+=v[i];
+}
+cout<<ans<<'\n';
+}
+
+int32_t main(){
+fastio;
+lli test=1;
+cin>>test;
+while(test--){
+solve();
+}
+}
