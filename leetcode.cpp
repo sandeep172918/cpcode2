@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-06-21 15:51
+//Date: 2026-07-09 16:02
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -39,21 +39,60 @@ using namespace std;
 const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
-using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
 
 
 class Solution {
 public:
-    long long countMajoritySubarrays(vector<int>& nums, int target) {
-        ordered_set<lli>st;
-        st.insert(0);
-        lli curr=0;
-        lli ans=0;
-        fr(i,nums.size()){
-          curr+=(nums[i]==target?1:-1);
-          ans+=st.order_of_key(curr);
+    vector<int> pathExistenceQueries(int n, vector<int>& nums, int maxi, vector<vector<int>>& q) {
+        vpr p(n);
+        fr(i,n){
+            p[i]={nums[i],i};
+        }
+        srt(p);
+        vvll s(n,vll(18));
+        lli l=0;
+        fr(r,n){
+            while(p[r].ff-p[l].ff>maxi){
+                s[l][0]=r-1;
+                l++;
+            }
+        }
+        while(l<n){
+            s[l][0]=n-1;
+            l++;
+        }
+        frs(i,1,17){
+          fr(j,n){
+            s[j][i]=s[s[j][i-1]][i-1];
+          }
+        }
+        vll id(n);
+        fr(i,n){
+            id[p[i].ss]=i;
+        }
+        lli m=q.size();
+        vll ans(m,-1);
+        fr(i,m){
+            lli u=id[q[i][0]];
+            lli v=id[q[i][0]];
+            if(u==v){
+                ans[i]=0;
+                continue;
+            }
+            if(u>v)swap(u,v);
+            lli cnt=0;
+            rfr(i,17,0){
+                if(s[u][i]<v){
+                    u=s[u][i];
+                    cnt+=(1ll<<i);
+                }
+            }
+            if(s[u][0]==v)ans[i]=cnt+1;
+
         }
         return ans;
+            
     }
 };
-
