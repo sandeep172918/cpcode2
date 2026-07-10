@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-09 16:02
+//Date: 2026-07-10 14:41
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -43,56 +43,40 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 
-class Solution {
-public:
-    vector<int> pathExistenceQueries(int n, vector<int>& nums, int maxi, vector<vector<int>>& q) {
-        vpr p(n);
-        fr(i,n){
-            p[i]={nums[i],i};
-        }
-        srt(p);
-        vvll s(n,vll(18));
-        lli l=0;
-        fr(r,n){
-            while(p[r].ff-p[l].ff>maxi){
-                s[l][0]=r-1;
-                l++;
-            }
-        }
-        while(l<n){
-            s[l][0]=n-1;
-            l++;
-        }
-        frs(i,1,17){
-          fr(j,n){
-            s[j][i]=s[s[j][i-1]][i-1];
-          }
-        }
-        vll id(n);
-        fr(i,n){
-            id[p[i].ss]=i;
-        }
-        lli m=q.size();
-        vector<int> ans(m,-1);
-        fr(i,m){
-            lli u=id[q[i][0]];
-            lli v=id[q[i][0]];
-            if(u==v){
-                ans[i]=0;
-                continue;
-            }
-            if(u>v)swap(u,v);
-            lli cnt=0;
-            rfr(i,17,0){
-                if(s[u][i]<v){
-                    u=s[u][i];
-                    cnt+=(1ll<<i);
-                }
-            }
-            if(s[u][0]==v)ans[i]=cnt+1;
-
-        }
-        return ans;
-            
+void solve(){
+lli n=0,k=0,q;string s;
+cin>>n>>k>>q;
+vector<vpr>adj(n+1);
+vvll dp(n+1,vll(n+1,1e13));
+fr(i,k){
+    lli u,v,w;cin>>u>>v>>w;
+    dp[u][v]=min(dp[u][v],w);
+    dp[v][u]=min(dp[v][u],w);
+}
+fr(i,n){
+    dp[i+1][i+1]=0;
+}
+frs(via,1,n){
+frs(i,1,n){
+    frs(j,1,n){
+            dp[i][j]=min(dp[i][j],dp[i][via]+dp[via][j]);
     }
-};
+}
+}
+fr(i,q){
+    lli u,v;cin>>u>>v;
+    if(dp[u][v]>=1e13)cout<<"-1\n";
+    else cout<<dp[u][v]<<'\n';
+}
+
+
+}
+
+int32_t main(){
+fastio;
+lli test=1;
+// cin>>test;
+while(test--){
+solve();
+}
+}

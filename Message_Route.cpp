@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-09 16:02
+//Date: 2026-07-10 12:35
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -43,56 +43,57 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 
-class Solution {
-public:
-    vector<int> pathExistenceQueries(int n, vector<int>& nums, int maxi, vector<vector<int>>& q) {
-        vpr p(n);
-        fr(i,n){
-            p[i]={nums[i],i};
-        }
-        srt(p);
-        vvll s(n,vll(18));
-        lli l=0;
-        fr(r,n){
-            while(p[r].ff-p[l].ff>maxi){
-                s[l][0]=r-1;
-                l++;
-            }
-        }
-        while(l<n){
-            s[l][0]=n-1;
-            l++;
-        }
-        frs(i,1,17){
-          fr(j,n){
-            s[j][i]=s[s[j][i-1]][i-1];
-          }
-        }
-        vll id(n);
-        fr(i,n){
-            id[p[i].ss]=i;
-        }
-        lli m=q.size();
-        vector<int> ans(m,-1);
-        fr(i,m){
-            lli u=id[q[i][0]];
-            lli v=id[q[i][0]];
-            if(u==v){
-                ans[i]=0;
-                continue;
-            }
-            if(u>v)swap(u,v);
-            lli cnt=0;
-            rfr(i,17,0){
-                if(s[u][i]<v){
-                    u=s[u][i];
-                    cnt+=(1ll<<i);
-                }
-            }
-            if(s[u][0]==v)ans[i]=cnt+1;
+void solve(){
+lli n=0,k=0;string s;
+cin>>n>>k;
+vvll adj(n+1);
+fr(i,k){
+    lli u,v;cin>>u>>v;
+    adj[u].psb(v);
+    adj[v].psb(u);
+}
+vll dist(n+1,1e18);
+dist[1]=1;
+vll par(n+1);
+iota(all(par),0);
+priority_queue<pr,vpr,greater<pr>>pq;
+pq.push({1,1});
+while(!pq.empty()){
+    auto it=pq.top();
+    pq.pop();
+    lli u=it.ss;
+    lli w=it.ff;
+    for(auto &it:adj[u]){
 
-        }
-        return ans;
-            
+      if(dist[it]>w+1){
+        dist[it]=w+1;
+        par[it]=u;
+        pq.push({dist[it],it});
+      }
     }
-};
+}
+if(dist[n]==1e18){
+    cout<<"IMPOSSIBLE\n";
+}else{
+    cout<<dist[n]<<'\n';
+    vll ans;
+    ans.psb(n);
+    while(ans.back()!=1){
+        lli x=par[ans.back()];
+        ans.psb(x);
+    }
+    reverse(all(ans));
+    out(ans);
+}
+
+
+}
+
+int32_t main(){
+fastio;
+lli test=1;
+// cin>>test;
+while(test--){
+solve();
+}
+}

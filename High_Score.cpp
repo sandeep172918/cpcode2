@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-09 16:02
+//Date: 2026-07-10 15:05
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -43,56 +43,75 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 
-class Solution {
-public:
-    vector<int> pathExistenceQueries(int n, vector<int>& nums, int maxi, vector<vector<int>>& q) {
-        vpr p(n);
-        fr(i,n){
-            p[i]={nums[i],i};
-        }
-        srt(p);
-        vvll s(n,vll(18));
-        lli l=0;
-        fr(r,n){
-            while(p[r].ff-p[l].ff>maxi){
-                s[l][0]=r-1;
-                l++;
-            }
-        }
-        while(l<n){
-            s[l][0]=n-1;
-            l++;
-        }
-        frs(i,1,17){
-          fr(j,n){
-            s[j][i]=s[s[j][i-1]][i-1];
-          }
-        }
-        vll id(n);
-        fr(i,n){
-            id[p[i].ss]=i;
-        }
-        lli m=q.size();
-        vector<int> ans(m,-1);
-        fr(i,m){
-            lli u=id[q[i][0]];
-            lli v=id[q[i][0]];
-            if(u==v){
-                ans[i]=0;
-                continue;
-            }
-            if(u>v)swap(u,v);
-            lli cnt=0;
-            rfr(i,17,0){
-                if(s[u][i]<v){
-                    u=s[u][i];
-                    cnt+=(1ll<<i);
-                }
-            }
-            if(s[u][0]==v)ans[i]=cnt+1;
+void solve(){
+lli n=0,k=0;string s;
+cin>>n>>k;
+vvll vv(k,vll(3));
+vvll adj(n+1);
 
+fr(i,k){
+  fr(j,3)cin>>vv[i][j];
+//   vv[i][2]*=-1;
+}
+for(auto x:vv){
+    adj[x[0]].push_back(x[1]);
+}
+vll dist(n+1,-1e18);
+dist[1]=0;
+fr(i,n-1){
+ for(auto &it:vv){
+   lli u=it[0];
+   lli v=it[1];
+   lli w=it[2];
+   if(dist[u]!=-1e18){
+      if(dist[u]+w>dist[v]){
+        dist[v]=dist[u]+w;
+      }
+   }
+  
+ }
+}
+
+vll bad(n+1,0);
+for(auto &it:vv){
+   lli u=it[0];
+   lli v=it[1];
+   lli w=it[2];
+   //cout<<dist[u]<<' '<<dist[v]<<' '<<w<<endl;
+   if(dist[u]!=-1e18){
+   if(dist[v]<dist[u]+w){
+    bad[v]=1;
+
+   }
+}
+}
+
+queue<int>q;
+for(int i=1;i<=n;i++) if(bad[i]) q.push(i);
+
+while(!q.empty()){
+    auto node = q.front();
+    q.pop();
+    for(auto x:adj[node]){
+        if(!bad[x]){
+            q.push(x);
+            bad[x]=1;
         }
-        return ans;
-            
     }
-};
+}
+
+
+if(bad[n])cout<<"-1\n";
+else{
+    cout<<dist[n]<<'\n';
+}
+}
+
+int32_t main(){
+fastio;
+lli test=1;
+// cin>>test;
+while(test--){
+solve();
+}
+}
