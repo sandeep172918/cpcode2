@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-11 01:14
+//Date: 2026-07-27 23:51
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -44,34 +44,33 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-lli n=0,m,k=0;string s;
-cin>>n>>m>>k;
-//get(v,n);
-//cin>>s;
-vector<vpr>adj(n+1);
-fr(i,m){
-    lli u,v,w;
-    cin>>u>>v>>w;
-    adj[u].push_back({v,w});
+lli n=0,k=0;string s;
+cin>>n>>k;
+get(v,n);
+
+if(is_sorted(all(v))){
+    cout<<"0\n";
+    return;
 }
-priority_queue<pr,vpr,greater<pr>>pq;
-pq.push({0,1});
-vll t;
-vll kk(n+1,k);
-vll dist(n+1,1e18);
-dist[1]=0;
-set<lli>st;
-while(!pq.empty()){
-    auto[d,u]=pq.top();
-    pq.pop();
-    if(u==n)cout<<d<<' ';
-    // if(d>dist[u])continue;
-    for(auto &[v,w]:adj[u]){
-        if(kk[v]){
-            kk[v]--;
-            dist[v]=min(dist[v],dist[u]+w);
-            pq.push({dist[v],v});
-        }
+frs(i,1,23){
+    lli g=1ll<<i;
+    bool bol=true;
+    for(lli i=0;i<n-g;i+=g){
+        lli mx=0,mn=1e18;
+         for(lli j=i;j<i+g && j<n;j++){
+            mx=max(mx,v[j]);
+         }
+         for(lli j=i+g;j<i+g+g &&j<n;j++){
+            mn=min(mn,v[j]);
+         }
+         if(mx>mn){
+            bol=false;
+            break;
+         }
+    }
+    if(bol){
+        cout<<(g>>1ll)<<'\n';
+        return;
     }
 }
 
@@ -80,7 +79,7 @@ while(!pq.empty()){
 int32_t main(){
 fastio;
 lli test=1;
-// cin>>test;
+cin>>test;
 while(test--){
 solve();
 }

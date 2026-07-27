@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-11 01:14
+//Date: 2026-07-27 22:12
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -44,43 +44,55 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 
 
 void solve(){
-lli n=0,m,k=0;string s;
-cin>>n>>m>>k;
-//get(v,n);
-//cin>>s;
-vector<vpr>adj(n+1);
-fr(i,m){
-    lli u,v,w;
-    cin>>u>>v>>w;
-    adj[u].push_back({v,w});
+lli n;cin>>n;
+vpr u(n),v(n);
+fr(i,n){
+    lli x,y;
+    cin>>x>>y;
+    u[i]={x+y,i};
+    v[i]={x-y,i};
 }
-priority_queue<pr,vpr,greater<pr>>pq;
-pq.push({0,1});
+if(n<=3){
+    cout<<"0\n";
+    return;
+}
+srt(u);
+srt(v);
 vll t;
-vll kk(n+1,k);
-vll dist(n+1,1e18);
-dist[1]=0;
-set<lli>st;
-while(!pq.empty()){
-    auto[d,u]=pq.top();
-    pq.pop();
-    if(u==n)cout<<d<<' ';
-    // if(d>dist[u])continue;
-    for(auto &[v,w]:adj[u]){
-        if(kk[v]){
-            kk[v]--;
-            dist[v]=min(dist[v],dist[u]+w);
-            pq.push({dist[v],v});
+lli ans=1e18;
+fr(i,3){
+  t.psb(u[i].ss);
+  t.psb(v[i].ss);
+  t.psb(u[n-i-1].ss);
+  t.psb(v[n-i-1].ss);
+}
+srt(t);
+t.erase(unique(all(t)),t.end());
+fr(i,t.size()){
+    frs(j,0,i-1){
+        lli ii=t[i];
+        lli jj=t[j];
+        lli mnx=1e18,mny=1e18,mxx=-1e18,mxy=-1e18;
+        fr(k,n){
+           if(u[k].ss!=ii && u[k].ss!=jj){
+             mnx=min(mnx,u[k].ff);
+             mxx=max(mxx,u[k].ff);
+           }
+           if(v[k].ss!=ii && v[k].ss!=jj){
+             mny=min(mny,v[k].ff);
+             mxy=max(mxy,v[k].ff);
+           }
         }
+        ans=min(ans,max(mxx-mnx,mxy-mny));
     }
 }
-
+cout<<ans<<'\n';
 }
 
 int32_t main(){
 fastio;
 lli test=1;
-// cin>>test;
+cin>>test;
 while(test--){
 solve();
 }
