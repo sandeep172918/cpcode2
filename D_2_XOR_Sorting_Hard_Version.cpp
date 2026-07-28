@@ -42,16 +42,236 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
+class Segment_Tree{
+   struct node{
+    lli sum;
+    lli lazy;
+    node(){
+        sum=1e18;
+        lazy=0;
+    }
+   };
+
+   vector<node>t;
+   vector<lli>v;
+   lli n;
+   public:
+    Segment_Tree(){
+
+    }
+    Segment_Tree(lli a){
+      vll temp(a);
+      init(temp);
+    }
+    Segment_Tree(vector<lli>&a){
+       init(a);
+    }
+    void init(vector<lli>&a){
+       n=a.size(); 
+       v=a;
+       t.resize(4*n+1);
+       build(1,0,n-1);
+
+    }
+  
+    node merge(node a,node b){ //isme lazy nhi sochna hota
+        node temp;
+        temp.sum=min(a.sum,b.sum);
+        return temp;
+    }
+
+
+    void build(lli id,lli l,lli r){
+        if(l==r){
+            t[id].sum=v[l];
+            t[id].lazy=0;
+            return;
+        }
+        lli mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid+1,r);
+        t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    void apply(lli id,lli l,lli r){
+         t[id].sum+=((r-l+1)*t[id].lazy);
+         return;
+    }
+
+    void push(lli id,lli l,lli r){
+        if(t[id].lazy !=0){
+           apply(id,l,r);
+           if(l!=r){
+           t[2*id].lazy+=t[id].lazy;
+           t[2*id+1].lazy+=t[id].lazy;
+           }
+        }
+        t[id].lazy=0;
+    }
+
+    void update(lli id,lli l,lli r,lli lq,lli rq,lli val){
+    //   push(id,l,r);
+      if(rq<l || r<lq){
+        return;
+      }
+      if(lq<=l && r<=rq){
+        t[id].lazy=val;
+        // push(id,l,r);
+        return;
+      }
+      lli mid=(l+r)/2;
+      update(2*id,l,mid,lq,rq,val);
+      update(2*id+1,mid+1,r,lq,rq,val);
+      t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    node query(lli id,lli l,lli r,lli lq,lli rq){
+    //   push(id,l,r);
+      if(rq<l || r<lq){
+        return node();
+      }
+      if(lq<=l && r<=rq){
+        return t[id];
+      }
+      lli mid=(l+r)/2;
+      return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+    }
+    lli quer(lli l,lli r){
+        node ans=query(1,0,n-1,l,r);
+        return ans.sum;
+    }
+    lli query_bs(lli id,lli l,lli r,lli lq,lli x){ //first element greater than x in range lq till end
+      push(id,l,r); 
+      if(r<lq)return -1;
+      if(t[id].sum<x)return -1;
+      if(l==r)return l;
+      lli mid=(l+r)/2;
+      lli left=query_bs(2*id,l,mid,lq,x);
+      if(left!=-1)return left;
+      return query_bs(2*id+1,mid+1,r,lq,x);
+    }
+};
+
+class Mx_segment_Tree{
+   struct node{
+    lli sum;
+    lli lazy;
+    node(){
+        sum=-1e18;
+        lazy=0;
+    }
+   };
+
+   vector<node>t;
+   vector<lli>v;
+   lli n;
+   public:
+    Mx_segment_Tree(){
+
+    }
+    Mx_segment_Tree(lli a){
+      vll temp(a);
+      init(temp);
+    }
+    Mx_segment_Tree(vector<lli>&a){
+       init(a);
+    }
+    void init(vector<lli>&a){
+       n=a.size(); 
+       v=a;
+       t.resize(4*n+1);
+       build(1,0,n-1);
+
+    }
+  
+    node merge(node a,node b){ //isme lazy nhi sochna hota
+        node temp;
+        temp.sum=max(a.sum,b.sum);
+        return temp;
+    }
+
+
+    void build(lli id,lli l,lli r){
+        if(l==r){
+            t[id].sum=v[l];
+            t[id].lazy=0;
+            return;
+        }
+        lli mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid+1,r);
+        t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    void apply(lli id,lli l,lli r){
+         t[id].sum+=((r-l+1)*t[id].lazy);
+         return;
+    }
+
+    void push(lli id,lli l,lli r){
+        if(t[id].lazy !=0){
+           apply(id,l,r);
+           if(l!=r){
+           t[2*id].lazy+=t[id].lazy;
+           t[2*id+1].lazy+=t[id].lazy;
+           }
+        }
+        t[id].lazy=0;
+    }
+
+    void update(lli id,lli l,lli r,lli lq,lli rq,lli val){
+    //   push(id,l,r);
+      if(rq<l || r<lq){
+        return;
+      }
+      if(lq<=l && r<=rq){
+        t[id].lazy=val;
+        // push(id,l,r);
+        return;
+      }
+      lli mid=(l+r)/2;
+      update(2*id,l,mid,lq,rq,val);
+      update(2*id+1,mid+1,r,lq,rq,val);
+      t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+    node query(lli id,lli l,lli r,lli lq,lli rq){
+    //   push(id,l,r);
+      if(rq<l || r<lq){
+        return node();
+      }
+      if(lq<=l && r<=rq){
+        return t[id];
+      }
+      lli mid=(l+r)/2;
+      return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+    }
+    lli quer(lli l,lli r){
+        node ans=query(1,0,n-1,l,r);
+        return ans.sum;
+    }
+    lli query_bs(lli id,lli l,lli r,lli lq,lli x){ //first element greater than x in range lq till end
+      push(id,l,r); 
+      if(r<lq)return -1;
+      if(t[id].sum<x)return -1;
+      if(l==r)return l;
+      lli mid=(l+r)/2;
+      lli left=query_bs(2*id,l,mid,lq,x);
+      if(left!=-1)return left;
+      return query_bs(2*id+1,mid+1,r,lq,x);
+    }
+};
+
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n>>k;
 get(v,n);
-
+vll ans(n+1);
+lli b=0;
 if(is_sorted(all(v))){
-    cout<<"0\n";
-    return;
-}
+   ans[0]=0;
+}else{
 frs(i,1,23){
     lli g=1ll<<i;
     bool bol=true;
@@ -69,9 +289,21 @@ frs(i,1,23){
          }
     }
     if(bol){
-        cout<<(g>>1ll)<<'\n';
-        return;
+         b=i;
+        ans[0]=(g>>1ll);
+        continue;
     }
+}
+Segment_Tree mnsg(v);
+Mx_segment_Tree mxsg(v);
+fr(i,k){
+ lli id,val;
+ cin>>id>>val;
+ mnsg.update(1,0,n-1,id,id,val);
+ mxsg.update(1,0,n-1,id,id,val);
+ 
+
+}
 }
 
 }
