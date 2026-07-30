@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-29 23:18
+//Date: 2026-07-30 12:11
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,25 +41,57 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+vvll adj;
+vll v;
+bool ans;
 
+pr dfs(lli node){
+    if(!adj[node].size()){
+        return {v[node],v[node]};
+    }
+    vpr r;
+    lli mini=1e18;
+    lli maxi=-1e18;
+    for(auto &it:adj[node]){
+        pr p=dfs(it);
+        if(p.ff==-1){
+            ans=false;
+            return {-1,-1};
+        }
+        r.psb(p);
+        mini=min(mini,p.ff);
+        maxi=max(maxi,p.ss);
+    }
+    lli k=0;
+    lli n=r.size();
+    fr(i,n){
+        lli mx=r[i].ss;
+        lli mn=r[(i+1)%n].ff;
+        if(mx+1==mn)k++;
+    }
+    if(k==n-1){
+        return {mini,maxi};
+    }else{
+        ans=false;
+        return {-1,-1};
+    }
+}
 
 void solve(){
 lli n=0,k=0;string s;
-cin>>n>>k;
-//get(v,n);
-cin>>s;
-vll p(n+1);
+cin>>n;
+adj=vvll(n+1);
+v=vll(n+1);
 frs(i,2,n){
-   p[i]=p[i-1]+(s[i-1]==s[i-2]);
+ cin>>k;
+ adj[k].psb(i);
 }
-fr(i,k){
-  lli l,r,kk;
-  cin>>l>>r>>kk;
-  lli x=p[r]-p[l];
-  if(x<=kk*2)yes;
-  else no;
+frs(i,1,n)cin>>v[i];
+ans=true;
+dfs(1);
+if(ans)yes;
+else no;
 
-}
 
 }
 

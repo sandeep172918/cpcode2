@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-29 23:18
+//Date: 2026-07-30 00:03
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -42,24 +42,90 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
+class Segment_Tree{
+   struct node{
+    lli sum;
+    lli ans;
+    node(){
+        sum=0;
+        ans=1e18;
+    }
+   };
+
+   vector<node>t;
+   vector<lli>v;
+   lli n;
+   public:
+    Segment_Tree(){
+
+    }
+    Segment_Tree(lli a){
+      vll temp(a);
+      init(temp);
+    }
+    Segment_Tree(vector<lli>&a){
+       init(a);
+    }
+    void init(vector<lli>&a){
+       n=a.size(); 
+       v=a;
+       t.resize(4*n+1);
+       build(1,0,n-1);
+
+    }
+  
+    node merge(node a,node b){ //isme lazy nhi sochna hota
+        node temp;
+        temp.sum=a.sum+b.sum;
+        temp.ans=min(a.ans,a.sum+b.ans);
+        return temp;
+    }
+
+
+    void build(lli id,lli l,lli r){
+        if(l==r){
+            t[id].sum=v[l];
+            t[id].ans=v[l];
+            return;
+        }
+        lli mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid+1,r);
+        t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    node query(lli id,lli l,lli r,lli lq,lli rq){
+      if(rq<l || r<lq){
+        return node();
+      }
+      if(lq<=l && r<=rq){
+        return t[id];
+      }
+      lli mid=(l+r)/2;
+      return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+    }
+    lli quer(lli l,lli r){
+        node ans=query(1,0,n-1,l,r);
+        return ans.ans;
+    }
+};
+
+
 
 void solve(){
 lli n=0,k=0;string s;
-cin>>n>>k;
-//get(v,n);
-cin>>s;
-vll p(n+1);
-frs(i,2,n){
-   p[i]=p[i-1]+(s[i-1]==s[i-2]);
+cin>>n;
+get(v,n);
+//cin>>s;
+fr(i,n){
+    v.psb(v[i]);
 }
-fr(i,k){
-  lli l,r,kk;
-  cin>>l>>r>>kk;
-  lli x=p[r]-p[l];
-  if(x<=kk*2)yes;
-  else no;
-
+Segment_Tree st(v);
+lli ans=0;
+fr(i,n){
+  k=st.quer(i,i+n-1);
+  if(k>=0)ans++;
 }
+cout<<ans<<'\n';
 
 }
 
