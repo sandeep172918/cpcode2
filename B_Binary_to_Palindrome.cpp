@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-30 19:31
+//Date: 2026-08-02 23:21
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,30 +41,43 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
-vector<vpr>adj;
-vll v;
-
-void dfs(lli node){
-    set<lli>st;
-    for(auto &it:adj[node]){
-        st.insert(it.ss);
-        dfs(it.ff);
-        
-    }
-}
 
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
-get(a,n);
-v=a;
-adj=vector<vpr>(n);
-frs(i,1,n-1){
-    lli v,w;
-    cin>>v>>w;
-    v--;
-    adj[v].push_back({i,w});
+//get(v,n);
+cin>>s;
+string a="1",b="",c="1",d="1";
+fr(i,n-1)a+='1';
+fr(i,n-1)c+='0';
+fr(i,n-2)d+='0';
+d+='1';
+fr(i,n){
+  if(i&1ll)b+='0';
+  else b+='1';
+}
+if(s==a){
+  fr(i,n)cout<<'a';
+  nl;
+}else if(s==b){
+  fr(i,n){
+    if(i&1)cout<<'b';
+    else cout<<'a';
+  }
+  nl;
+}else if(s==c){
+  fr(i,n-1)cout<<'a';
+  cout<<"b\n";
+}else if(s==d && n>=4){
+  fr(i,n/2-1)cout<<'a';
+  if(n&1)cout<<"aba";
+  else cout<<"bb";
+  fr(i,n/2-1)cout<<'a';
+  nl;
+
+}else{
+    cout<<"-1\n";
 }
 
 

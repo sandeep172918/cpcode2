@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-30 19:31
+//Date: 2026-08-02 23:56
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,32 +41,23 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
-vector<vpr>adj;
-vll v;
-
-void dfs(lli node){
-    set<lli>st;
-    for(auto &it:adj[node]){
-        st.insert(it.ss);
-        dfs(it.ff);
-        
-    }
-}
 
 
 void solve(){
 lli n=0,k=0;string s;
 cin>>n;
-get(a,n);
-v=a;
-adj=vector<vpr>(n);
-frs(i,1,n-1){
-    lli v,w;
-    cin>>v>>w;
-    v--;
-    adj[v].push_back({i,w});
+get(v,n);
+//cin>>s;
+fr(i,n)v[i]&=1;
+fr(i,n){
+ if(v[i]==v.back())k++;
 }
-
+lli c=0;
+rfr(i,n-1,0){
+    if(v[i]==v.back())c++;
+    else break;
+}
+cout<<k-c+1<<'\n';
 
 }
 

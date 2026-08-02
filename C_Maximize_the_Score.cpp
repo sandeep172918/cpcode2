@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-07-30 19:31
+//Date: 2026-08-02 00:32
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,33 +41,44 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
-vector<vpr>adj;
 vll v;
+vpr p;
+vll dp;
+lli n;
 
-void dfs(lli node){
-    set<lli>st;
-    for(auto &it:adj[node]){
-        st.insert(it.ss);
-        dfs(it.ff);
-        
+lli dpp(lli i){
+    if(i>=2*n)return 0;
+    if(dp[i]!=-1)return dp[i];
+    lli l=p[v[i]].ff;
+    lli r=p[v[i]].ss;
+    lli k=r-l+1;
+    lli ans=0;
+    if(l==i){
+        lli pick=k*k+dpp(r+1);
+        lli nopick=1+dpp(l+1);
+        ans=max(pick,nopick);
+    }else{  //already got processed.
+        lli nopick=1+dpp(i+1);
+        ans=max(ans,nopick);
     }
+    return dp[i]=ans;
 }
-
 
 void solve(){
-lli n=0,k=0;string s;
 cin>>n;
-get(a,n);
-v=a;
-adj=vector<vpr>(n);
-frs(i,1,n-1){
-    lli v,w;
-    cin>>v>>w;
-    v--;
-    adj[v].push_back({i,w});
+v=vll(2*n);
+p=vpr(n,{-1,-1});
+dp=vll(2*n,-1);
+fr(i,2*n)cin>>v[i];
+fr(i,2*n)v[i]--;
+fr(i,2*n){
+    if(p[v[i]].ff==-1){
+       p[v[i]].ff=i;
+    }else{
+        p[v[i]].ss=i;
+    }
 }
-
-
+cout<<dpp(0)<<'\n';
 }
 
 int32_t main(){
