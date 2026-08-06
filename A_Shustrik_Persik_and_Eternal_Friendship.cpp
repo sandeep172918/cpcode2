@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-04-03 02:25
+//Date: 2026-08-05 21:36
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -40,43 +40,35 @@ const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-//BSDK math snippet hai
 
-vvll adj;
-vll ans;
-vll c;
-vector<set<lli>>st;
-void dfs(lli node,lli par){
-    st[node].insert(c[node]);
-    for(auto &it:adj[node]){
-        if(it==par)continue;
-        dfs(it,node);
-        if(st[it].size()>st[node].size()){
-            swap(st[it],st[node]);
-        }
-        for(auto &itt:st[it])st[node].insert(itt);
-        st[it].clear();
-    }
-    ans[node]=st[node].size();
-}
+
 
 void solve(){
-lli n=0,k=0,m=0,x=0;
+lli n=0,k=0;string s;
 cin>>n;
-get(v,n);
-c=v;
-ans=vll(n);
-adj=vvll(n);
-st=vector<set<lli>>(n);
-fr(i,n-1){
-    lli u,v;cin>>u>>v;
-    u--;
-    v--;
-    adj[u].psb(v);
-    adj[v].psb(u);
+//get(v,n);
+cin>>s;
+if(s[0]!=s[n-1]){
+    cout<<"0\n";
+    return;
 }
-dfs(0,-1);
-out(ans);
+lli l=1,r=1;
+frs(i,1,n-1){
+    if(s[i]!=s[i-1]){
+        break;
+    }
+    l++;
+}
+rfr(i,n-2,0){
+    if(s[i]!=s[i+1])break;
+    r++;
+}
+if(l>=r){
+    cout<<r<<'\n';
+}else{
+    cout<<-l<<'\n';
+}
+
 }
 
 int32_t main(){

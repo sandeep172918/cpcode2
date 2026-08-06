@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-04-03 02:25
+//Date: 2026-08-06 21:09
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -40,43 +40,76 @@ const int MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-//BSDK math snippet hai
 
-vvll adj;
-vll ans;
-vll c;
-vector<set<lli>>st;
-void dfs(lli node,lli par){
-    st[node].insert(c[node]);
-    for(auto &it:adj[node]){
-        if(it==par)continue;
-        dfs(it,node);
-        if(st[it].size()>st[node].size()){
-            swap(st[it],st[node]);
+vvll vis;
+vpr t;
+vpr d={{0,1},{0,-1},{1,0},{-1,0}};
+lli n,m;
+vector<vector<char>>v;
+
+void dfs(lli i,lli j){
+   vis[i][j]=1;
+   t.push_back({i,j});
+   fr(x,4){
+            lli ii=i+d[x].ff;
+            lli jj=j+d[x].ss;
+            if(ii>=0 && ii<n &&jj>=0 && jj<m && !vis[ii][jj]){
+                dfs(ii,jj);
+            }
         }
-        for(auto &itt:st[it])st[node].insert(itt);
-        st[it].clear();
-    }
-    ans[node]=st[node].size();
 }
 
 void solve(){
-lli n=0,k=0,m=0,x=0;
-cin>>n;
-get(v,n);
-c=v;
-ans=vll(n);
-adj=vvll(n);
-st=vector<set<lli>>(n);
-fr(i,n-1){
-    lli u,v;cin>>u>>v;
-    u--;
-    v--;
-    adj[u].psb(v);
-    adj[v].psb(u);
+lli k=0;string s;
+cin>>n>>m>>k;
+v=vector<vector<char>>(n,vector<char>(m));
+fr(i,n){
+    fr(j,m){
+        cin>>v[i][j];
+    }
 }
-dfs(0,-1);
-out(ans);
+vvll vv(n,vll(m));
+fr(i,n){
+    fr(j,m){
+        if(v[i][j]=='*')continue;
+        fr(x,4){
+            lli ii=i+d[x].ff;
+            lli jj=j+d[x].ss;
+            if(ii>=0 && ii<n &&jj>=0 && jj<m){
+              if(v[i][j]!=v[ii][jj])vv[i][j]++;
+            }
+        }
+    }
+}
+vis=vvll(n,vll(m));
+fr(i,n){
+    fr(j,m){
+        if(v[i][j]=='*')vis[i][j]=1;
+    }
+}
+fr(i,n){
+    fr(j,m){
+        if(!vis[i][j]){
+            t.clear();
+            dfs(i,j);
+            lli curr=0;
+            for(auto &it:t){
+                curr+=vv[it.ff][it.ss];
+            }
+            for(auto &it:t){
+                vv[it.ff][it.ss]=curr;
+            }
+        }
+    }
+}
+fr(i,k){
+    lli a,b;
+    cin>>a>>b;
+    a--;
+    b--;
+    cout<<vv[a][b]<<'\n';
+}
+
 }
 
 int32_t main(){
