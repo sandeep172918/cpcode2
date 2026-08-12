@@ -42,7 +42,7 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
  vector<lli> par;
     vector<lli> sz;
-    vector<lli>d;
+    // vector<lli>d;
     vector<lli>curr;
  
 class UnionFind
@@ -55,20 +55,20 @@ public:
         par = vector<lli>(n);
         iota(par.begin(), par.end(), 0);
         sz = vector<lli>(n, 1);
-        d = vector<lli>(n);
+        // d = vector<lli>(n);
         curr = vector<lli>(n);
     }
  
     lli find(lli u)
     {
-        // this optimisation was good.
-        if (par[u] != par[par[u]])
-            par[u] = find(par[par[u]]);
-        return par[u];
+       while(1){
+        u=par[u];
+        if(u==par[u])break;
+       }
+       return u;
     }
     lli getval(lli u){
-       lli ans=d[u];
-       u=par[u];
+       lli ans=0;
        while(true){
         ans+=curr[u];
         if(u==par[u])break;
@@ -89,7 +89,7 @@ public:
         if(sz[u]<sz[v])swap(u,v);
           sz[u] += sz[v];
             par[v] = u;
-            d[v]-=curr[u];
+            curr[v]-=curr[u];
             return 1;
         // if (sz[u] <= sz[v])
         // {
@@ -106,6 +106,7 @@ public:
     void add(lli u,lli val){
         u=find(u);
         curr[u]+=val;
+      
     }
     
 };
