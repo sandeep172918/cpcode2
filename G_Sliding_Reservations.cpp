@@ -50,34 +50,29 @@ get(a,3);
 get(b,3);
 srt(a);
 srt(b);
-lli ans=0;
 lli r=n-b[2]+1;
+lli l=b[0];
 set<lli>st;
 fr(i,3){
-    frs(j,i,2){
+    fr(j,3){
        if(a[j]>=b[i]){
         if(a[j]-b[i]<r)
-        st.insert(a[j]-b[i]); }
+            st.insert(a[j]-b[i]); 
+        }
     }
 }
-r-=st.size();
-ans+=r;
-lli l=b[0]-1;
-// for(auto &it:st)cout<<it<<' ';
-// nl;
-st.clear();
 rfr(i,2,0){
-    rfr(j,i,0){
-     if(a[j]<b[i]){
-        if(b[i]-a[j]<=l)
-        st.insert(b[i]-a[j]);}
+    rfr(j,2,0){
+     if(a[j]<=b[i]){
+        if(b[i]-a[j]<l)
+            st.insert(a[j]-b[i]);
+    }
     }
 }
 // for(auto &it:st)cout<<it<<' ';
 // nl;
-l-=st.size();
-ans+=l;
-cout<<ans<<'\n';
+cout<<r+l-1-st.size()<<'\n';
+
 }
 
 int32_t main(){

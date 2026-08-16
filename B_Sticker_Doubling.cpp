@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-08-13 23:55
+//Date: 2026-08-16 18:13
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,15 +41,89 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+#define vll vector<lli>
+class Segment_Tree{
+   struct node{
+    lli sum;
+    lli lazy;
+    node(){
+        sum=(1LL<<60)-1;
+        lazy=0;
+    }
+   };
+
+   vector<node>t;
+   vector<lli>v;
+   lli n;
+   public:
+    Segment_Tree(){
+
+    }
+    Segment_Tree(lli a){
+      vll temp(a);
+      init(temp);
+    }
+    Segment_Tree(vector<lli>&a){
+       init(a);
+    }
+    void init(vector<lli>&a){
+       n=a.size(); 
+       v=a;
+       t.resize(4*n+1);
+       build(1,0,n-1);
+
+    }
+  
+    node merge(node a,node b){ //isme lazy nhi sochna hota
+        node temp;
+        temp.sum=a.sum&b.sum;
+        return temp;
+    }
+
+
+    void build(lli id,lli l,lli r){
+        if(l==r){
+            t[id].sum=v[l];
+            t[id].lazy=0;
+            return;
+        }
+        lli mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid+1,r);
+        t[id]=merge(t[2*id],t[2*id+1]);
+    }
+    
+   
+    
+    node query(lli id,lli l,lli r,lli lq,lli rq){
+    //   push(id,l,r);
+      if(rq<l || r<lq){
+        return node();
+      }
+      if(lq<=l && r<=rq){
+        return t[id];
+      }
+      lli mid=(l+r)/2;
+      return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+    }
+    lli quer(lli l,lli r){
+        node ans=query(1,0,n-1,l,r);
+        return ans.sum;
+    }
+   
+};
 
 
 void solve(){
-lli n=0,k=0;string s;
-cin>>n;
-get(v,n);
-//cin>>s;
-if(count(all(v),1)!=n && accumulate(all(v),0ll)==n)yes;
-else no;
+// lli n=0,k=0;string s;
+lli n=9;
+vll v={1,2,3,4,5,6,7,8,9};
+Segment_Tree st(v);
+cout<<st.quer(0,8)<<'\n';
+cout<<st.quer(1,2)<<'\n';
+cout<<st.quer(0,3)<<'\n';
+
+
 }
 
 int32_t main(){

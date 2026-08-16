@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-08-13 23:55
+//Date: 2026-08-16 20:45
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -41,15 +41,82 @@ using namespace __gnu_pbds;
 template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
+vll a,b;
+set<lli>aa,bb;
+lli check(lli mid){
+    // lli ans=0;
+    lli j=0;
+    lli curr=0;
+    lli tot=0;
+    fr(i,a.size()){
+        while(j<b.size() && a[i]<=mid/b[j]){
+             curr++;
+             j++;
+        }
+        tot+=curr;
+    }
+    return tot;
+}
 
 
 void solve(){
-lli n=0,k=0;string s;
+lli n=0,k=1e18;
 cin>>n;
 get(v,n);
-//cin>>s;
-if(count(all(v),1)!=n && accumulate(all(v),0ll)==n)yes;
-else no;
+lli x;cin>>x;
+srt(v);
+fr(i,n){
+    if(i&1)b.psb(v[i]);
+    else a.psb(v[i]);
+}
+// return;
+aa.insert(1);
+fr(i,a.size()){
+    set<lli>c;
+    for(auto &it:aa){
+        c.insert(it);
+        lli kk=it;
+        while(kk<=k/a[i]){
+          kk*=a[i];
+          c.insert(kk);
+        }
+    } 
+    aa=c;   
+}
+// return;
+bb.insert(1);
+fr(i,b.size()){
+    set<lli>c;
+    for(auto &it:bb){
+        c.insert(it);
+        lli kk=it;
+        while(kk<=k/b[i]){
+          kk*=b[i];
+          c.insert(kk);
+        }
+    }
+    bb=c;    
+}
+// return;
+a.clear();
+b.clear();
+for(auto &it:aa)a.psb(it);
+for(auto &it:bb)b.psb(it);
+rsrt(a);
+lli low=1,high=1e18;
+lli t=200;
+while(1 && low<high){
+    lli mid=(low+high)/2;
+    if(check(mid)<x){
+        low=mid+1;
+    }else{
+        high=mid;
+    }
+
+}
+cout<<low<<'\n';
+
+
 }
 
 int32_t main(){
