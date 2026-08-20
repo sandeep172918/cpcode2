@@ -1,5 +1,5 @@
 //Author:coding_with_alzheimer
-//Date: 2026-08-20 03:13
+//Date: 2026-08-20 04:07
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -39,56 +39,7 @@ using namespace std;
 const lli MOD=1e9+7;
 using namespace __gnu_pbds;
 template <typename T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-class FenwickTree{
-private:
-    vector<lli>bit;
-    lli n;
-
-public:
-    FenwickTree(lli size){
-        n=size+1;
-        bit.assign(n,0);
-    }
-
-    void update(lli i,lli val){
-        for(++i;i<n;i+=(i& -i))
-            bit[i]+=val;
-    } 
-
-    lli query(lli i){
-        lli sum=0;
-        for (++i;i>0;i-=(i& -i))
-            sum+=bit[i];
-        return sum;
-    }
-    void range_update(lli l,lli r,lli val){
-        update(l,val);
-        update(r+1,-val);
-    } 
-};
-
-void solve(){
-lli n=0,m,k=0;string s;
-cin>>n;
-get(v,n);
-FenwickTree ft(n);
-fr(i,n){
- ft.range_update(i,i,v[i]);
-}
-
-
-}
-
-int32_t main(){
-fastio;
-lli test=1;
-cin>>test;
-while(test--){
-solve();
-}
-}
+using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
 class Segment_Tree{
@@ -159,13 +110,13 @@ class Segment_Tree{
     }
 
     void update(lli id,lli l,lli r,lli lq,lli rq,lli val){
-      push(id,l,r);
+    //   push(id,l,r);
       if(rq<l || r<lq){
         return;
       }
       if(lq<=l && r<=rq){
-        t[id].lazy+=val;
-        push(id,l,r);
+        t[id].sum+=val;
+        // push(id,l,r);
         return;
       }
       lli mid=(l+r)/2;
@@ -175,7 +126,7 @@ class Segment_Tree{
     }
     
     node query(lli id,lli l,lli r,lli lq,lli rq){
-      push(id,l,r);
+    //   push(id,l,r);
       if(rq<l || r<lq){
         return node();
       }
@@ -200,3 +151,52 @@ class Segment_Tree{
       return query_bs(2*id+1,mid+1,r,lq,x);
     }
 };
+
+
+void solve(){
+lli n=0,m,k=0;string s;
+cin>>n;
+get(x,n);
+get(v,n);
+vpr p(n);
+fr(i,n)p[i]={x[i],v[i]};
+rsrt(p);
+// for(auto &it:p){
+//     cout<<it.ff<<' ';
+// }
+// nl;
+// for(auto &it:p){
+//     cout<<it.ss<<' ';
+// }
+// nl;
+vll t(n);
+ordered_set<lli>os;
+fr(i,n){
+  t[i]=os.size()-os.order_of_key(p[i].ss);
+  os.insert(p[i].ss);
+}
+// out(t);
+srt(v);
+v.erase(unique(all(v)),v.end());
+m=v.size();
+// return;
+Segment_Tree st(m);
+lli ans=0;
+fr(i,n){
+ lli it=lower_bound(all(v),p[i].ss)-v.begin();
+ ans+=st.quer(it,m-1);
+ ans-=t[i]*p[i].ff;
+ st.update(1,0,m-1,it,it,p[i].ff);
+}
+
+cout<<ans<<'\n';
+}
+
+int32_t main(){
+fastio;
+lli test=1;
+// cin>>test;
+while(test--){
+solve();
+}
+}
