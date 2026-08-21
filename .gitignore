@@ -3,3 +3,4 @@
 
 # Ignore all compiled output files
 *.out
+test.cpp
