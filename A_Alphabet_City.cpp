@@ -42,7 +42,6 @@ template <typename T>
 using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 
-
 void solve(){
 lli n=0,m,k=0;
 cin>>n>>k;
@@ -58,11 +57,7 @@ fr(i,n){
  fr(j,s[i].size()){
    v[i][s[i][j]-'A']-=k;
  }
- lli low=0,high=1e9;
- while(low<high){
-   lli mid=(low+mid)/2;
-   
- }
+ 
 }
 
 }
